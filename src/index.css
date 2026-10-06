@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-dark: #1A1A2E;
+  --color-brand-deep: #191827;
+  --color-brand-amber: #E0A23A;
+  --color-brand-teal: #1F6F8B;
+  --color-brand-teal-deep: #236B7A;
+  --color-brand-slate: #7A8FA6;
+  --color-brand-slate-light: #A7B5C5;
+  --color-brand-gray: #7A7A7A;
+  --color-brand-bg: #F4F6F7;
+  --color-brand-surface: #E2E4E7;
+}
+
+:root {
+  --bg-main: #F4F6F7;
+  --border-main: #E2E4E7;
+}
+
+@keyframes kpiFadeSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-kpi-entrance {
+  animation: kpiFadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.kpi-delay-1 { animation-delay: 50ms; }
+.kpi-delay-2 { animation-delay: 100ms; }
+.kpi-delay-3 { animation-delay: 150ms; }
+.kpi-delay-4 { animation-delay: 200ms; }
+.kpi-delay-5 { animation-delay: 250ms; }
+.kpi-delay-6 { animation-delay: 300ms; }

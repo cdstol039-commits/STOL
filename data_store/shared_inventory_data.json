@@ -1,0 +1,682 @@
+{
+  "fileName": "Inventario_Pockets_Actualizado.xlsx",
+  "fileSize": null,
+  "totalItems": 67,
+  "inventory": [
+    {
+      "id": "inv-1789830867840-1",
+      "numero": 1,
+      "serie": "19115B5367",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-2",
+      "numero": 2,
+      "serie": "22097B1FD5",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-3",
+      "numero": 3,
+      "serie": "22097B495A",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-4",
+      "numero": 4,
+      "serie": "24085B0177",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-5",
+      "numero": 5,
+      "serie": "24206B06B7",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-6",
+      "numero": 6,
+      "serie": "19159B04D4",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-7",
+      "numero": 7,
+      "serie": "22067B2D08",
+      "area": "CROSS DOCKING",
+      "estado": "INOPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "FALLA DEL TECLADO",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-8",
+      "numero": 8,
+      "serie": "21077B351D",
+      "area": "CROSS DOCKING",
+      "estado": "INOPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "FALLO EN EL SISTEMA",
+      "mantenimiento": "DADO DE BAJA"
+    },
+    {
+      "id": "inv-1789830867840-9",
+      "numero": 9,
+      "serie": "19169B84E1",
+      "area": "CROSS DOCKING",
+      "estado": "INOPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "FALLA EL RECONOCIMIENTO DEL LASER",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-10",
+      "numero": 10,
+      "serie": "19159B1337",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-11",
+      "numero": 11,
+      "serie": "22097B0336",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-12",
+      "numero": 12,
+      "serie": "25016B0006",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-13",
+      "numero": 13,
+      "serie": "25023B0765",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-14",
+      "numero": 14,
+      "serie": "25015B5753",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-15",
+      "numero": 15,
+      "serie": "21118B2F62",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-16",
+      "numero": 16,
+      "serie": "22097B3AB1",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-17",
+      "numero": 17,
+      "serie": "19169B9838",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-18",
+      "numero": 18,
+      "serie": "20077B0326",
+      "area": "CROSS DOCKING",
+      "estado": "OPERATIVO",
+      "responsable": "MARCO SILVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-19",
+      "numero": 19,
+      "serie": "24204B4941",
+      "area": "INVENTARIO",
+      "estado": "OPERATIVO",
+      "responsable": "MAKLEY VILLANUEVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-20",
+      "numero": 20,
+      "serie": "24333B3DF0",
+      "area": "INVENTARIO",
+      "estado": "OPERATIVO",
+      "responsable": "MAKLEY VILLANUEVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-21",
+      "numero": 21,
+      "serie": "25023B0CA2",
+      "area": "INVENTARIO",
+      "estado": "OPERATIVO",
+      "responsable": "MAKLEY VILLANUEVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-22",
+      "numero": 22,
+      "serie": "25023B0769",
+      "area": "INVENTARIO",
+      "estado": "OPERATIVO",
+      "responsable": "MAKLEY VILLANUEVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-23",
+      "numero": 23,
+      "serie": "25016B049E",
+      "area": "INVENTARIO",
+      "estado": "OPERATIVO",
+      "responsable": "MAKLEY VILLANUEVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-24",
+      "numero": 24,
+      "serie": "25023B0522",
+      "area": "INVENTARIO",
+      "estado": "OPERATIVO",
+      "responsable": "MAKLEY VILLANUEVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-25",
+      "numero": 25,
+      "serie": "25015B6658",
+      "area": "INVENTARIO",
+      "estado": "OPERATIVO",
+      "responsable": "MAKLEY VILLANUEVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-26",
+      "numero": 26,
+      "serie": "25023B08CC",
+      "area": "INVENTARIO",
+      "estado": "OPERATIVO",
+      "responsable": "MAKLEY VILLANUEVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-27",
+      "numero": 27,
+      "serie": "21077B34BD",
+      "area": "ALMACEN",
+      "estado": "OPERATIVO",
+      "responsable": "JAITER GIRON",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-28",
+      "numero": 28,
+      "serie": "19159BO4D4",
+      "area": "ALMACEN",
+      "estado": "OPERATIVO",
+      "responsable": "JAITER GIRON",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-29",
+      "numero": 29,
+      "serie": "2502380BD8",
+      "area": "IMPORTADOS",
+      "estado": "OPERATIVO",
+      "responsable": "JAITER GIRON",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-30",
+      "numero": 30,
+      "serie": "21086B22D5",
+      "area": "PICKING",
+      "estado": "INOPERATIVO",
+      "responsable": "PEDRO OLIVA",
+      "observaciones": "PANTALLA ROTA",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-31",
+      "numero": 31,
+      "serie": "25016B530D",
+      "area": "ECOMMERCE",
+      "estado": "OPERATIVO",
+      "responsable": "PEDRO OLIVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-32",
+      "numero": 32,
+      "serie": "21076B20E5",
+      "area": "ECOMMERCE",
+      "estado": "OPERATIVO",
+      "responsable": "PEDRO OLIVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-33",
+      "numero": 33,
+      "serie": "21111B1FAD",
+      "area": "VEV",
+      "estado": "OPERATIVO",
+      "responsable": "PEDRO OLIVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-34",
+      "numero": 34,
+      "serie": "25023B0931",
+      "area": "PICKING",
+      "estado": "OPERATIVO",
+      "responsable": "PEDRO OLIVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-35",
+      "numero": 35,
+      "serie": "19159B13C4",
+      "area": "ECOMMERCE",
+      "estado": "OPERATIVO",
+      "responsable": "PEDRO OLIVA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-36",
+      "numero": 36,
+      "serie": "24139B08A9",
+      "area": "DESPACHO",
+      "estado": "OPERATIVO",
+      "responsable": "LIZ MINAYA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-37",
+      "numero": 37,
+      "serie": "25023B0C37",
+      "area": "DESPACHO",
+      "estado": "OPERATIVO",
+      "responsable": "LIZ MINAYA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-38",
+      "numero": 38,
+      "serie": "24206B0186",
+      "area": "DESPACHO",
+      "estado": "OPERATIVO",
+      "responsable": "LIZ MINAYA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-39",
+      "numero": 39,
+      "serie": "25016B2C7C",
+      "area": "DESPACHO",
+      "estado": "OPERATIVO",
+      "responsable": "LIZ MINAYA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-40",
+      "numero": 40,
+      "serie": "25023B10B7",
+      "area": "DESPACHO",
+      "estado": "OPERATIVO",
+      "responsable": "LIZ MINAYA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-41",
+      "numero": 41,
+      "serie": "25023B02F5",
+      "area": "DESPACHO",
+      "estado": "OPERATIVO",
+      "responsable": "LIZ MINAYA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-42",
+      "numero": 42,
+      "serie": "25016B4FFA",
+      "area": "DESPACHO",
+      "estado": "OPERATIVO",
+      "responsable": "LIZ MINAYA",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-43",
+      "numero": 43,
+      "serie": "50023B0CE4",
+      "area": "OPERACIONES",
+      "estado": "OPERATIVO",
+      "responsable": "KARLA BOLIVAR",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-44",
+      "numero": 44,
+      "serie": "25023B0634",
+      "area": "OPERACIONES",
+      "estado": "OPERATIVO",
+      "responsable": "KARLA BOLIVAR",
+      "observaciones": "-",
+      "mantenimiento": ""
+    },
+    {
+      "id": "inv-1789830867840-45",
+      "numero": 45,
+      "serie": "21116B3B0F",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "DADO DE BAJA"
+    },
+    {
+      "id": "inv-1789830867840-46",
+      "numero": 46,
+      "serie": "22117B1D06",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-47",
+      "numero": 47,
+      "serie": "21351B390F",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "DADO DE BAJA"
+    },
+    {
+      "id": "inv-1789830867840-48",
+      "numero": 48,
+      "serie": "19159B03DE",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "DADO DE BAJA"
+    },
+    {
+      "id": "inv-1789830867840-49",
+      "numero": 49,
+      "serie": "19169B971C",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "DADO DE BAJA"
+    },
+    {
+      "id": "inv-1789830867840-50",
+      "numero": 50,
+      "serie": "20014B627B",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-51",
+      "numero": 51,
+      "serie": "22056B663F",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "DADO DE BAJA"
+    },
+    {
+      "id": "inv-1789830867840-52",
+      "numero": 52,
+      "serie": "22054B3911",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "DADO DE BAJA"
+    },
+    {
+      "id": "inv-1789830867840-53",
+      "numero": 53,
+      "serie": "21351B242B",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-54",
+      "numero": 54,
+      "serie": "21086B243A",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-55",
+      "numero": 55,
+      "serie": "22117B3224",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-56",
+      "numero": 56,
+      "serie": "20014B3609",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-57",
+      "numero": 57,
+      "serie": "22097B460F",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-58",
+      "numero": 58,
+      "serie": "20073B24CB",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-59",
+      "numero": 59,
+      "serie": "20077B29CB",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "DADO DE BAJA"
+    },
+    {
+      "id": "inv-1789830867840-60",
+      "numero": 60,
+      "serie": "21077B384B",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-61",
+      "numero": 61,
+      "serie": "21351B2FD2",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-62",
+      "numero": 62,
+      "serie": "19159B0573",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-63",
+      "numero": 63,
+      "serie": "22067B4B3D",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "DADO DE BAJA"
+    },
+    {
+      "id": "inv-1789830867840-64",
+      "numero": 64,
+      "serie": "22117B300B",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-65",
+      "numero": 65,
+      "serie": "21086B234C",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "DADO DE BAJA"
+    },
+    {
+      "id": "inv-1789830867840-66",
+      "numero": 66,
+      "serie": "22097B46CA",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    },
+    {
+      "id": "inv-1789830867840-67",
+      "numero": 67,
+      "serie": "20014B565D",
+      "area": "CONTROL DE RECURSOS",
+      "estado": "INOPERATIVO",
+      "responsable": "JUAN DE DIOS",
+      "observaciones": "INOPERATIVOS",
+      "mantenimiento": "POR REPARAR"
+    }
+  ],
+  "updatedAt": "2026-09-19T15:56:15.902Z",
+  "updatedBy": "Operador Autorizado",
+  "source": "inventory_upload",
+  "environment": "pre_publish",
+  "isLatest": true
+}

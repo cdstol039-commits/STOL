@@ -1,0 +1,6 @@
+{
+  "name": "Portal de Auditorías y Control de Pockets",
+  "description": "Sistema interactivo de auditorías para control de pockets, memos e inducción de campo con dashboards, filtros y gestión de roles.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

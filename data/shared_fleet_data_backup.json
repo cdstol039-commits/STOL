@@ -1,0 +1,1333 @@
+{
+  "fileName": "DATA_DASHBOARD_EJECUTIVO_ESTANDARIZADO (1).xlsx",
+  "fileSize": null,
+  "totalEquipos": 19,
+  "totalIncidencias": 93,
+  "data": {
+    "equipos": [
+      {
+        "codigo": "HGR-027",
+        "proveedor": "DERCO",
+        "tipo": "BACKUP",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 72,
+            "horas_inoperativas": 0
+          },
+          "Agosto": {
+            "horas_usadas": 61,
+            "horas_inoperativas": 23.33
+          },
+          "Setiembre": {
+            "horas_usadas": 145,
+            "horas_inoperativas": 45
+          }
+        }
+      },
+      {
+        "codigo": "HER-160",
+        "proveedor": "DERCO",
+        "tipo": "ELEVADOR",
+        "limite": 375,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 298,
+            "horas_inoperativas": 76.23
+          },
+          "Agosto": {
+            "horas_usadas": 274,
+            "horas_inoperativas": 148.16
+          },
+          "Setiembre": {
+            "horas_usadas": 340,
+            "horas_inoperativas": 27.98
+          }
+        }
+      },
+      {
+        "codigo": "HER-161",
+        "proveedor": "DERCO",
+        "tipo": "ELEVADOR",
+        "limite": 375,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 277,
+            "horas_inoperativas": 80.33
+          },
+          "Agosto": {
+            "horas_usadas": 312,
+            "horas_inoperativas": 58.69
+          },
+          "Setiembre": {
+            "horas_usadas": 212,
+            "horas_inoperativas": 0
+          }
+        }
+      },
+      {
+        "codigo": "HGR-073",
+        "proveedor": "DERCO",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 488.7,
+            "horas_inoperativas": 0
+          },
+          "Agosto": {
+            "horas_usadas": 469.8,
+            "horas_inoperativas": 367.13
+          },
+          "Setiembre": {
+            "horas_usadas": 380.9,
+            "horas_inoperativas": 0
+          }
+        }
+      },
+      {
+        "codigo": "HGR-131",
+        "proveedor": "DERCO",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 352.7,
+            "horas_inoperativas": 79.36
+          },
+          "Agosto": {
+            "horas_usadas": 410.6,
+            "horas_inoperativas": 30.65
+          },
+          "Setiembre": {
+            "horas_usadas": 323.5,
+            "horas_inoperativas": 0
+          }
+        }
+      },
+      {
+        "codigo": "HGR-141",
+        "proveedor": "DERCO",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 464.1,
+            "horas_inoperativas": 2.35
+          },
+          "Agosto": {
+            "horas_usadas": 501.7,
+            "horas_inoperativas": 49.33
+          },
+          "Setiembre": {
+            "horas_usadas": 400.2,
+            "horas_inoperativas": 0
+          }
+        }
+      },
+      {
+        "codigo": "KGR-241",
+        "proveedor": "DERCO",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 0,
+            "horas_inoperativas": 0
+          },
+          "Agosto": {
+            "horas_usadas": 0,
+            "horas_inoperativas": 4
+          },
+          "Setiembre": {
+            "horas_usadas": 0,
+            "horas_inoperativas": 88.78
+          }
+        }
+      },
+      {
+        "codigo": "KGR-465",
+        "proveedor": "DERCO",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 440.9,
+            "horas_inoperativas": 23.83
+          },
+          "Agosto": {
+            "horas_usadas": 492,
+            "horas_inoperativas": 3
+          },
+          "Setiembre": {
+            "horas_usadas": 389.9,
+            "horas_inoperativas": 81.88
+          }
+        }
+      },
+      {
+        "codigo": "KGR-516",
+        "proveedor": "DERCO",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 415.9,
+            "horas_inoperativas": 23.48
+          },
+          "Agosto": {
+            "horas_usadas": 351.3,
+            "horas_inoperativas": 45.87
+          },
+          "Setiembre": {
+            "horas_usadas": 319.6,
+            "horas_inoperativas": 0
+          }
+        }
+      },
+      {
+        "codigo": "SER-241",
+        "proveedor": "DERCO",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 274,
+            "horas_inoperativas": 0
+          },
+          "Agosto": {
+            "horas_usadas": 252,
+            "horas_inoperativas": 0
+          },
+          "Setiembre": {
+            "horas_usadas": 203,
+            "horas_inoperativas": 0
+          }
+        }
+      },
+      {
+        "codigo": "SGR-010",
+        "proveedor": "DERCO",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 324.3,
+            "horas_inoperativas": 0
+          },
+          "Agosto": {
+            "horas_usadas": 346.7,
+            "horas_inoperativas": 14.19
+          },
+          "Setiembre": {
+            "horas_usadas": 0,
+            "horas_inoperativas": 0
+          }
+        }
+      },
+      {
+        "codigo": "SGR-017",
+        "proveedor": "DERCO",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 464.2,
+            "horas_inoperativas": 25.12
+          },
+          "Agosto": {
+            "horas_usadas": 450.2,
+            "horas_inoperativas": 96.67
+          },
+          "Setiembre": {
+            "horas_usadas": 355.4,
+            "horas_inoperativas": 124.32
+          }
+        }
+      },
+      {
+        "codigo": "NOVATRANS 290",
+        "proveedor": "NOVA",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 0,
+            "horas_inoperativas": 0
+          },
+          "Agosto": {
+            "horas_usadas": 10094.5,
+            "horas_inoperativas": 69.33
+          },
+          "Setiembre": {
+            "horas_usadas": 14.1,
+            "horas_inoperativas": 91.28
+          }
+        }
+      },
+      {
+        "codigo": "NOVATRANS 366",
+        "proveedor": "NOVA",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 0,
+            "horas_inoperativas": 0
+          },
+          "Agosto": {
+            "horas_usadas": 163.1,
+            "horas_inoperativas": 0
+          },
+          "Setiembre": {
+            "horas_usadas": 18,
+            "horas_inoperativas": 75.95
+          }
+        }
+      },
+      {
+        "codigo": "NOVATRANS 370",
+        "proveedor": "NOVA",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 40.3,
+            "horas_inoperativas": 0
+          },
+          "Agosto": {
+            "horas_usadas": 719.8,
+            "horas_inoperativas": 109.13
+          },
+          "Setiembre": {
+            "horas_usadas": 12.8,
+            "horas_inoperativas": 206.08
+          }
+        }
+      },
+      {
+        "codigo": "NOVATRANS 374",
+        "proveedor": "NOVA",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 27.5,
+            "horas_inoperativas": 97.8
+          },
+          "Agosto": {
+            "horas_usadas": 302.6,
+            "horas_inoperativas": 120.78
+          },
+          "Setiembre": {
+            "horas_usadas": 5.2,
+            "horas_inoperativas": 98.47
+          }
+        }
+      },
+      {
+        "codigo": "NOVATRANS 383",
+        "proveedor": "NOVA",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 0,
+            "horas_inoperativas": 51.37
+          },
+          "Agosto": {
+            "horas_usadas": 35.2,
+            "horas_inoperativas": 56.83
+          },
+          "Setiembre": {
+            "horas_usadas": 0,
+            "horas_inoperativas": 208.28
+          }
+        }
+      },
+      {
+        "codigo": "NOVATRANS 390",
+        "proveedor": "NOVA",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 107.1,
+            "horas_inoperativas": 87.65
+          },
+          "Agosto": {
+            "horas_usadas": 2846.1,
+            "horas_inoperativas": 76.36
+          },
+          "Setiembre": {
+            "horas_usadas": 7.4,
+            "horas_inoperativas": 128.1
+          }
+        }
+      },
+      {
+        "codigo": "NOVATRANS 391",
+        "proveedor": "NOVA",
+        "tipo": "MONTACARGA",
+        "limite": 300,
+        "meses": {
+          "Julio": {
+            "horas_usadas": 70,
+            "horas_inoperativas": 35.08
+          },
+          "Agosto": {
+            "horas_usadas": 125.5,
+            "horas_inoperativas": 31.83
+          },
+          "Setiembre": {
+            "horas_usadas": 0,
+            "horas_inoperativas": 0
+          }
+        }
+      }
+    ],
+    "incidencias": [
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 391",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 17.58,
+        "motivo": "Estructura y Accesorios"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 374",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 51.93,
+        "motivo": "Estructura y Accesorios"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 391",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 17.5,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 374",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 45.87,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 390",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 56.23,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 383",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 51.37,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 390",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 31.42,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "SGR-017",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 25.12,
+        "motivo": "Estructura y Accesorios"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "KGR-465",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 20.08,
+        "motivo": "Falla de Batería / Encendido"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "KGR-465",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 1.85,
+        "motivo": "Falla de Batería / Encendido"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "KGR-465",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 1.9,
+        "motivo": "Llantas y Rodamientos"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "HGR-141",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 2.35,
+        "motivo": "Llantas y Rodamientos"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "KGR-516",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 4.15,
+        "motivo": "Llantas y Rodamientos"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "HGR-131",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 41.83,
+        "motivo": "Falla de Batería / Encendido"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "HGR-131",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 37.53,
+        "motivo": "Sistema de Aceleración"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "KGR-516",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 4,
+        "motivo": "Falla de Batería / Encendido"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "KGR-516",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 15.33,
+        "motivo": "Sistema de Frenos"
+      },
+      {
+        "fecha": "",
+        "mes": "Junio",
+        "proveedor": "DERCO",
+        "codigo": "HER-161",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 21.74,
+        "motivo": "Llantas y Rodamientos"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "HER-160",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 76.23,
+        "motivo": "Sistema de Aceleración"
+      },
+      {
+        "fecha": "",
+        "mes": "Julio",
+        "proveedor": "DERCO",
+        "codigo": "HER-161",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 80.33,
+        "motivo": "Falla de Batería / Encendido"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "KGR-516",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 0,
+        "motivo": "Falla de Batería / Encendido"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HGR-073",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 0,
+        "motivo": "Sistema de Aceleración"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "KGR-516",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 14.5,
+        "motivo": "Falla de Batería / Encendido"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "SGR-010",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 14.19,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HER-161",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 28.62,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "KGR-516",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 28.37,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HGR-073",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 283.79,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HER-161",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 30.07,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HGR-027",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 23.33,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "SGR-017",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 95.17,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "SGR-017",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 1.5,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HGR-131",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 3,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "KGR-241",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 4,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HGR-141",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 4,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HGR-073",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 3,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "KGR-465",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 3,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "KGR-516",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 3,
+        "motivo": "Mantenimiento Preventivo"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HER-160",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 74.08,
+        "motivo": "Sistema de Dirección / Timón"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HGR-073",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 40.17,
+        "motivo": "Sistema Mástil / Hidráulico"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "SGR-010",
+        "tipo_mant": "Correctivo",
+        "resultado": "Pendiente",
+        "horas": 0,
+        "motivo": "Falla de Batería / Encendido"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 383",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 56.83,
+        "motivo": "Sistema Mástil / Hidráulico"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 391",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 31.83,
+        "motivo": "Falla de Batería / Encendido"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 374",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 91.93,
+        "motivo": "Sistema de Dirección / Timón"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 374",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 21.25,
+        "motivo": "Sistema Mástil / Hidráulico"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 370",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 24.3,
+        "motivo": "Estructura y Accesorios"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 390",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 0,
+        "motivo": "Sistema Mecánico / Transmisión"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 390",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 26.83,
+        "motivo": "Fuga de Fluidos / Gas"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 290",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 69.33,
+        "motivo": "Sistema Mecánico / Transmisión"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 390",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 49.53,
+        "motivo": "Sistema Mástil / Hidráulico"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 370",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 84.83,
+        "motivo": "Fuga de Fluidos / Gas"
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 374",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Reparado",
+        "horas": 7.6,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HER-160",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 74.08,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HGR-131",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Reparado",
+        "horas": 27.65,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HGR-073",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 40.17,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "HGR-141",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Reparado",
+        "horas": 45.33,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Agosto",
+        "proveedor": "DERCO",
+        "codigo": "SGR-010",
+        "tipo_mant": "Correctivo",
+        "resultado": "Pendiente",
+        "horas": 0,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 374",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 26.8,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "KGR-241",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Reparado",
+        "horas": 71.15,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "KGR-241",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 1.3,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 290",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 32.95,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "HER-160",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 27.98,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "HGR-027",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 25.17,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 390",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Reparado",
+        "horas": 50.67,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 390",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 4.05,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 370",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 52.83,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 370",
+        "tipo_mant": "Correctivo",
+        "resultado": "Pendiente",
+        "horas": 153.25,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 366",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Reparado",
+        "horas": 28.73,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "SGR-017",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 17.47,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 366",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 1.45,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 383",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 62.83,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 383",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 33.13,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 374",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 71.67,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 383",
+        "tipo_mant": "Correctivo",
+        "resultado": "Pendiente",
+        "horas": 77.67,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 383",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 5.6,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 366",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Reparado",
+        "horas": 39.67,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 290",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 58.33,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "KGR-241",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 16.33,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "SGR-017",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 0.35,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 366",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 6.1,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 290",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Pendiente",
+        "horas": 0,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "HGR-027",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 19.83,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 383",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Reparado",
+        "horas": 29.05,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "KGR-465",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 81.33,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "KGR-241",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Pendiente",
+        "horas": 0,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "SGR-017",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 73.67,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 390",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Reparado",
+        "horas": 32.73,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "SGR-017",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 32.83,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "KGR-465",
+        "tipo_mant": "Preventivo",
+        "resultado": "Reparado",
+        "horas": 0.55,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 390",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 40.65,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "NOVA",
+        "codigo": "NOVATRANS 391",
+        "tipo_mant": "OBSERVACIÓN",
+        "resultado": "Pendiente",
+        "horas": 0,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "HGR-286",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 16.97,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "HGR-280",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 53.67,
+        "motivo": ""
+      },
+      {
+        "fecha": "",
+        "mes": "Setiembre",
+        "proveedor": "DERCO",
+        "codigo": "HGR-284",
+        "tipo_mant": "Correctivo",
+        "resultado": "Reparado",
+        "horas": 16.83,
+        "motivo": ""
+      }
+    ],
+    "meses": [
+      "Julio",
+      "Agosto",
+      "Setiembre"
+    ]
+  },
+  "updatedAt": "2026-09-29T16:43:12.375Z",
+  "updatedBy": "Operador Autorizado",
+  "source": "excel_fleet_upload",
+  "isUserUploaded": true,
+  "environment": "pre_publish",
+  "isLatest": true
+}
