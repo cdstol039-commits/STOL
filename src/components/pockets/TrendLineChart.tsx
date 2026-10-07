@@ -113,6 +113,7 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({
         <svg
           viewBox={`0 0 ${width} ${height}`}
           className="w-full h-auto max-h-[220px] select-none"
+          fontFamily="sans-serif"
         >
           <defs>
             <linearGradient id={`trendBarGrad-${id}`} x1="0%" y1="0%" x2="0%" y2="100%">

@@ -41,21 +41,21 @@ export const BarChart3D: React.FC<BarChart3DProps> = ({
   // Y-axis ticks from 100% down to 0% in steps of 10%
   const yTicks = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0];
 
-  // Palette configs for 3D effect: restored original vibrant crimson and blue colors for charts
+  // Muted colors keep the 3D charts readable without overpowering the dashboard.
   const colors = theme === 'crimson' ? {
-    front: '#DC2626',        // Classic Crimson Red
-    frontGradStart: '#EF4444',
-    frontGradEnd: '#991B1B',
-    side: '#7F1D1D',         // Dark Crimson Shadow
-    top: '#F87171',          // Highlight
-    legend: '#DC2626',
+    front: '#B85C63',
+    frontGradStart: '#D18489',
+    frontGradEnd: '#91434A',
+    side: '#773B40',
+    top: '#D99A9E',
+    legend: '#B85C63',
   } : {
-    front: '#1D70B8',        // Classic Royal Blue
-    frontGradStart: '#3B82F6',
-    frontGradEnd: '#1E40AF',
-    side: '#172554',         // Dark Navy Blue Shadow
-    top: '#93C5FD',          // Highlight
-    legend: '#1D70B8',
+    front: '#4E83A8',
+    frontGradStart: '#78A4C2',
+    frontGradEnd: '#3A6686',
+    side: '#34566F',
+    top: '#A1BED1',
+    legend: '#4E83A8',
   };
 
   const getYCoord = (val: number) => {
@@ -83,6 +83,7 @@ export const BarChart3D: React.FC<BarChart3DProps> = ({
         <svg
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
           className="w-full h-auto min-w-[580px] select-none"
+          fontFamily="sans-serif"
         >
           <defs>
             {/* Front gradient for 3D cylinder appearance */}

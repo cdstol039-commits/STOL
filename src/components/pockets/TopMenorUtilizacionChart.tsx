@@ -72,17 +72,18 @@ export const TopMenorUtilizacionChart: React.FC<TopMenorUtilizacionProps> = ({
             <svg
               viewBox={`0 0 ${svgWidth} ${svgHeight}`}
               className="w-full h-auto min-w-[500px] select-none"
+              fontFamily="sans-serif"
             >
               <defs>
                 <linearGradient id="hBarGradBlue" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#1E40AF" />
-                  <stop offset="70%" stopColor="#2563EB" />
-                  <stop offset="100%" stopColor="#3B82F6" />
+                  <stop offset="0%" stopColor="#466C88" />
+                  <stop offset="70%" stopColor="#5F8EAF" />
+                  <stop offset="100%" stopColor="#78A4C2" />
                 </linearGradient>
                 <linearGradient id="hBarGradCrimson" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#7F1D1D" />
-                  <stop offset="70%" stopColor="#DC2626" />
-                  <stop offset="100%" stopColor="#EF4444" />
+                  <stop offset="0%" stopColor="#773B40" />
+                  <stop offset="70%" stopColor="#B85C63" />
+                  <stop offset="100%" stopColor="#D18489" />
                 </linearGradient>
               </defs>
 
@@ -148,7 +149,7 @@ export const TopMenorUtilizacionChart: React.FC<TopMenorUtilizacionProps> = ({
                       x={paddingLeft - 10}
                       y={barY + barHeight / 2 + 3.5}
                       textAnchor="end"
-                      fill={isHovered ? (isCritical ? '#DC2626' : '#2563EB') : '#1E293B'}
+                      fill={isHovered ? (isCritical ? '#91434A' : '#3A6686') : '#334155'}
                       fontSize="10"
                       fontWeight={isHovered ? 'bold' : '600'}
                       fontFamily="sans-serif"
@@ -164,8 +165,8 @@ export const TopMenorUtilizacionChart: React.FC<TopMenorUtilizacionProps> = ({
                         ${paddingLeft + barW + depth},${barY - depth}
                         ${paddingLeft + barW},${barY}
                       `}
-                      fill={isCritical ? '#F87171' : '#93C5FD'}
-                      stroke={isCritical ? '#DC2626' : '#2563EB'}
+                      fill={isCritical ? '#D99A9E' : '#A1BED1'}
+                      stroke={isCritical ? '#B85C63' : '#4E83A8'}
                       strokeWidth="0.5"
                     />
 
@@ -177,7 +178,7 @@ export const TopMenorUtilizacionChart: React.FC<TopMenorUtilizacionProps> = ({
                         ${paddingLeft + barW + depth},${barY + barHeight - depth}
                         ${paddingLeft + barW},${barY + barHeight}
                       `}
-                      fill={isCritical ? '#7F1D1D' : '#172554'}
+                      fill={isCritical ? '#773B40' : '#34566F'}
                       opacity={isHovered ? 1 : 0.85}
                     />
 

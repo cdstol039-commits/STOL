@@ -636,7 +636,7 @@ export const PocketsDashboard: React.FC<PocketsDashboardProps> = ({
       {/* 2. Main 2-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         {/* LEFT COLUMN: Trends and Motivos */}
-        <div className="lg:col-span-5 space-y-4">
+        <div className="lg:col-span-6 space-y-4">
           {/* Chart 1 Left: TENDENCIA DE % DEL CUMPLIMIENTO POR REGISTRO (Combo Bars + Line) */}
           <TrendLineChart
             id="chart-trend-registro"
@@ -666,7 +666,7 @@ export const PocketsDashboard: React.FC<PocketsDashboardProps> = ({
         </div>
 
         {/* RIGHT COLUMN: 3D Area Distribution and Top Under-utilized */}
-        <div className="lg:col-span-7 space-y-4">
+        <div className="lg:col-span-6 space-y-4">
           {/* Chart 1 Right: PORCENTAJE DEL CUMPLIMIENTOS POR REGISTRO (Crimson 3D Bars) */}
           <BarChart3D
             id="chart-bar-registro"
