@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import {
   PackageCheck,
@@ -31,6 +31,7 @@ import { ChartPalletsObservadosPorArea } from './ChartPalletsObservadosPorArea';
 import { PalletRecordsTable } from './PalletRecordsTable';
 import { PalletUploadModal } from './PalletUploadModal';
 import { PalletExtractionModal } from './PalletExtractionModal';
+import { PeriodSelection } from '../../types/period';
 
 interface PalletsDashboardProps {
   allRecords: PalletObservation[];
@@ -40,6 +41,7 @@ interface PalletsDashboardProps {
   onOpenPhotoSummary?: () => void;
   latestFileName?: string | null;
   lastUpdatedAt?: string | null;
+  analysisPeriod: PeriodSelection;
 }
 
 export const PalletsDashboard: React.FC<PalletsDashboardProps> = ({
@@ -50,6 +52,7 @@ export const PalletsDashboard: React.FC<PalletsDashboardProps> = ({
   onOpenPhotoSummary,
   latestFileName = 'CONTROL_PALLETS_OBSERVADOS.xlsx',
   lastUpdatedAt,
+  analysisPeriod,
 }) => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isExtractionModalOpen, setIsExtractionModalOpen] = useState(false);
@@ -68,6 +71,18 @@ export const PalletsDashboard: React.FC<PalletsDashboardProps> = ({
     estado: 'TODOS',
     searchQuery: '',
   });
+
+  useEffect(() => {
+    setPalletFilters((current) => ({
+      ...current,
+      mes: 'TODOS',
+      meses: [],
+      semana: 'TODAS',
+      semanas: [],
+      fecha: 'TODAS',
+      fechas: [],
+    }));
+  }, [analysisPeriod]);
 
   // Apply Independent Filtering strictly tied to the charts and table
   const filteredRecords = useMemo(() => {

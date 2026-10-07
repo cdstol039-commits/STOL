@@ -50,6 +50,7 @@ const formatPct = (x: number | null | undefined): string => {
 
 const getSupervisorWeekTotal = (s: SupervisorRecord, i: number): number | null => {
   if (!s || !s.op) return null;
+  if (s.total?.[i] !== undefined) return s.total[i];
   const op = s.op[i];
   if (op == null) return null;
   const rh = s.rh?.[i] ?? 0;

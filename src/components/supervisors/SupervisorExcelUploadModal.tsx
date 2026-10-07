@@ -116,7 +116,7 @@ export const SupervisorExcelUploadModal: React.FC<SupervisorExcelUploadModalProp
                 Carga Consolidada de Supervisores (Un Solo Excel)
               </h2>
               <p className="text-xs text-slate-300">
-                Actualiza calificaciones (60/20/20) y extrae observaciones de RRHH y SIG
+                Importa las calificaciones sin modificarlas y vincula RRHH/SIG por fecha
               </p>
             </div>
           </div>
@@ -138,7 +138,7 @@ export const SupervisorExcelUploadModal: React.FC<SupervisorExcelUploadModalProp
                 <span>Estructura Oficial en 3 Hojas</span>
               </div>
               <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
-                Descarga la plantilla con las 3 hojas estándar: <strong>CONSOLIDADO_OPERACIONES</strong> (recalculada 60/20/20), <strong>RRHH</strong> y <strong>SIG</strong> (con observaciones detalladas).
+                Descarga la plantilla con las hojas <strong>CONSOLIDADO_OPERACIONES</strong>, <strong>RRHH</strong> y <strong>SIG</strong>. Las notas del consolidado se importan tal como están.
               </p>
             </div>
 
@@ -207,7 +207,7 @@ export const SupervisorExcelUploadModal: React.FC<SupervisorExcelUploadModalProp
               {guideTab === 'consol' && (
                 <div className="space-y-2">
                   <p className="text-[11px] text-slate-600">
-                    <strong>Hoja CONSOLIDADO_OPERACIONES:</strong> En esta tabla las notas de <strong>RRHH</strong> (20%) y <strong>SIG</strong> (20%) ya vienen recalculadas de acuerdo a la fórmula corporativa ponderada.
+                    <strong>Hoja CONSOLIDADO_OPERACIONES:</strong> La aplicación conserva las notas consignadas en <strong>VALOR OP</strong>, <strong>VALOR RRHH</strong>, <strong>VALOR SIG</strong> y <strong>VALOR TOTAL</strong>; no vuelve a calcularlas.
                   </p>
                   <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
                     <table className="w-full text-left text-[11px] border-collapse">
@@ -236,13 +236,13 @@ export const SupervisorExcelUploadModal: React.FC<SupervisorExcelUploadModalProp
                           <td className="py-1 px-2 font-bold text-blue-700 border-r border-slate-100">VALOR RRHH 20%</td>
                           <td className="py-1 px-2 text-rose-600 font-bold border-r border-slate-100">Sí</td>
                           <td className="py-1 px-2 border-r border-slate-100 font-mono">12.60 o 0.1260</td>
-                          <td className="py-1 px-2">Recalculado con la fórmula para evaluación del supervisor.</td>
+                          <td className="py-1 px-2">Valor ponderado registrado en el consolidado.</td>
                         </tr>
                         <tr className="bg-slate-50/50">
                           <td className="py-1 px-2 font-bold text-blue-700 border-r border-slate-100">VALOR SIG 20%</td>
                           <td className="py-1 px-2 text-rose-600 font-bold border-r border-slate-100">Sí</td>
                           <td className="py-1 px-2 border-r border-slate-100 font-mono">16.00 o 0.1600</td>
-                          <td className="py-1 px-2">Recalculado con la fórmula para evaluación del supervisor.</td>
+                          <td className="py-1 px-2">Valor ponderado registrado en el consolidado.</td>
                         </tr>
                         <tr>
                           <td className="py-1 px-2 font-bold text-blue-700 border-r border-slate-100">SEMANA y MES</td>
@@ -260,7 +260,7 @@ export const SupervisorExcelUploadModal: React.FC<SupervisorExcelUploadModalProp
               {guideTab === 'rrhh' && (
                 <div className="space-y-2">
                   <p className="text-[11px] text-slate-600">
-                    <strong>Hoja RRHH:</strong> De esta tabla el sistema extrae las observaciones y los motivos exactos por los cuales el supervisor tiene penalizaciones en Gestión Humana (tardanzas, horas extras, descansos). Auditor: <strong>Karla Bolívar</strong>.
+                    <strong>Hoja RRHH:</strong> Se vinculan las observaciones con la evaluación por fecha, área, proceso y objetivo. No requiere columna de supervisor. Auditor: <strong>Karla Bolívar</strong>.
                   </p>
                   <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
                     <table className="w-full text-left text-[11px] border-collapse">
@@ -274,10 +274,10 @@ export const SupervisorExcelUploadModal: React.FC<SupervisorExcelUploadModalProp
                       </thead>
                       <tbody className="divide-y divide-slate-100 text-slate-700">
                         <tr>
-                          <td className="py-1 px-2 font-bold text-blue-700 border-r border-slate-100">SUPERVISOR / AREA</td>
+                          <td className="py-1 px-2 font-bold text-blue-700 border-r border-slate-100">FECHA / AREA / PROCESO / OBJETIVO</td>
                           <td className="py-1 px-2 text-rose-600 font-bold border-r border-slate-100">Sí</td>
-                          <td className="py-1 px-2 border-r border-slate-100">Pedro Oliva / Almacenamiento</td>
-                          <td className="py-1 px-2">Supervisor asignado o área evaluada.</td>
+                          <td className="py-1 px-2 border-r border-slate-100">18/09/2026 / Almacenamiento / Control de Inventario</td>
+                          <td className="py-1 px-2">Campos que relacionan la observación con la fila evaluada en Operaciones.</td>
                         </tr>
                         <tr className="bg-slate-50/50">
                           <td className="py-1 px-2 font-bold text-blue-700 border-r border-slate-100">OBSERVACION</td>
@@ -287,7 +287,7 @@ export const SupervisorExcelUploadModal: React.FC<SupervisorExcelUploadModalProp
                         </tr>
                         <tr>
                           <td className="py-1 px-2 font-bold text-blue-700 border-r border-slate-100">OBJETIVO / PROCESO</td>
-                          <td className="py-1 px-2 text-slate-500 border-r border-slate-100">Opcional</td>
+                          <td className="py-1 px-2 text-rose-600 font-bold border-r border-slate-100">Sí</td>
                           <td className="py-1 px-2 border-r border-slate-100">Asistencia y Puntualidad</td>
                           <td className="py-1 px-2">Criterio o estándar evaluado.</td>
                         </tr>
@@ -307,7 +307,7 @@ export const SupervisorExcelUploadModal: React.FC<SupervisorExcelUploadModalProp
               {guideTab === 'sig' && (
                 <div className="space-y-2">
                   <p className="text-[11px] text-slate-600">
-                    <strong>Hoja SIG:</strong> De esta tabla el sistema extrae las observaciones de Seguridad y Salud en el Trabajo, charlas de 5 min, ATS y orden 5S. Auditor: <strong>Makley Villanueva</strong>.
+                    <strong>Hoja SIG:</strong> Se vinculan las observaciones con la evaluación por fecha, área, proceso y objetivo. No requiere columna de supervisor. Auditor: <strong>Makley Villanueva</strong>.
                   </p>
                   <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
                     <table className="w-full text-left text-[11px] border-collapse">
@@ -321,10 +321,10 @@ export const SupervisorExcelUploadModal: React.FC<SupervisorExcelUploadModalProp
                       </thead>
                       <tbody className="divide-y divide-slate-100 text-slate-700">
                         <tr>
-                          <td className="py-1 px-2 font-bold text-blue-700 border-r border-slate-100">SUPERVISOR / AREA</td>
+                          <td className="py-1 px-2 font-bold text-blue-700 border-r border-slate-100">FECHA / AREA / PROCESO / OBJETIVO</td>
                           <td className="py-1 px-2 text-rose-600 font-bold border-r border-slate-100">Sí</td>
-                          <td className="py-1 px-2 border-r border-slate-100">Pedro Oliva / Almacenamiento</td>
-                          <td className="py-1 px-2">Supervisor asignado o área evaluada.</td>
+                          <td className="py-1 px-2 border-r border-slate-100">18/09/2026 / Recepción / Recepción de Mercadería</td>
+                          <td className="py-1 px-2">Campos que relacionan la observación con la fila evaluada en Operaciones.</td>
                         </tr>
                         <tr className="bg-slate-50/50">
                           <td className="py-1 px-2 font-bold text-blue-700 border-r border-slate-100">OBSERVACION</td>
@@ -479,7 +479,7 @@ export const SupervisorExcelUploadModal: React.FC<SupervisorExcelUploadModalProp
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-start gap-2 text-slate-500 text-[11px]">
             <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
             <div>
-              <span className="font-black text-slate-700">Fórmula de ponderación:</span> En el Consolidado de Operaciones las columnas de RRHH y SIG ya se consideran recalculadas para la nota del supervisor (Operaciones 60% + RRHH 20% + SIG 20%). Las observaciones de las hojas <strong>RRHH</strong> y <strong>SIG</strong> alimentan automáticamente la sección de <em>¿Por qué tiene esa nota?</em>.
+              <span className="font-black text-slate-700">Regla de importación:</span> Las notas se conservan como aparecen en el Consolidado de Operaciones. Las observaciones de <strong>RRHH</strong> y <strong>SIG</strong> solo se incluyen cuando su fecha también figura en ese consolidado.
             </div>
           </div>
         </div>

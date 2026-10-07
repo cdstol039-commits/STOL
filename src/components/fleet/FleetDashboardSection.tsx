@@ -34,6 +34,8 @@ import { FleetDashboardData, FleetEquipo, FleetIncidencia } from '../../types/fl
 import { formatAuditDateTime } from '../../utils/persistence';
 import { formatDisplayDate } from '../../utils/normalizer';
 import { parseFleetExcelWorkbook, canonicalFleetMonth, cleanHoursValue } from '../../utils/fleetExcelParser';
+import { PeriodSelection } from '../../types/period';
+import { matchesPeriod } from '../../utils/period';
 
 interface FleetDashboardSectionProps {
   fleetData: FleetDashboardData;
@@ -44,7 +46,120 @@ interface FleetDashboardSectionProps {
   latestFleetFileName?: string | null;
   lastFleetUpdatedAt?: string | null;
   isPublished?: boolean;
+  analysisPeriod: PeriodSelection;
 }
+
+interface FleetPeriodViewProps {
+  fleetData: FleetDashboardData;
+  period: PeriodSelection;
+  onUpdateData: () => void;
+  onOpenPhotoSummary?: () => void;
+}
+
+const FleetPeriodView: React.FC<FleetPeriodViewProps> = ({ fleetData, period, onUpdateData, onOpenPhotoSummary }) => {
+  const records = (fleetData.registrosDiarios || []).filter((record) => matchesPeriod(record.fecha, period));
+  const incidents = (fleetData.incidencias || []).filter((record) => matchesPeriod(record.fecha, period));
+  const totalUsage = records.reduce((sum, record) => sum + (record.horas_usadas || 0), 0);
+  const totalDowntime = records.reduce((sum, record) => sum + record.horas_inoperativas, 0);
+  const equipmentCount = new Set(records.map((record) => record.codigo)).size;
+  const hasDailySource = (fleetData.registrosDiarios || []).length > 0;
+
+  return (
+    <div className="space-y-5 pb-8">
+      <header className="flex flex-wrap items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <p className="text-xs font-bold uppercase text-amber-700">Flota · detalle fechado</p>
+          <h1 className="mt-1 text-2xl font-black text-[#1A1A2E]">Horómetros de Montacargas</h1>
+          <p className="mt-1 text-sm text-slate-600">Lecturas e incidencias dentro del periodo seleccionado.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {onOpenPhotoSummary && (
+            <button type="button" onClick={onOpenPhotoSummary} title="Abrir resumen fotográfico" className="rounded-md border border-slate-300 bg-white p-2 text-slate-700 hover:bg-slate-100">
+              <Camera className="h-4 w-4" />
+            </button>
+          )}
+          <button type="button" onClick={onUpdateData} className="rounded-md bg-[#1A1A2E] px-3 py-2 text-xs font-bold text-white hover:bg-slate-700">
+            Actualizar datos
+          </button>
+        </div>
+      </header>
+
+      <section aria-label="Resumen de flota del periodo" className="grid grid-cols-1 gap-3 sm:grid-cols-4">
+        <article className="border border-slate-200 bg-white p-4">
+          <p className="text-xs font-bold uppercase text-slate-500">Equipos con lectura</p>
+          <p className="mt-2 text-2xl font-black tabular-nums text-slate-900">{equipmentCount}</p>
+        </article>
+        <article className="border border-slate-200 bg-white p-4">
+          <p className="text-xs font-bold uppercase text-slate-500">Registros fechados</p>
+          <p className="mt-2 text-2xl font-black tabular-nums text-slate-900">{records.length}</p>
+        </article>
+        <article className="border border-slate-200 bg-white p-4">
+          <p className="text-xs font-bold uppercase text-slate-500">Horas usadas registradas</p>
+          <p className="mt-2 text-2xl font-black tabular-nums text-slate-900">{totalUsage.toLocaleString('es-PE', { maximumFractionDigits: 1 })} h</p>
+        </article>
+        <article className="border border-slate-200 bg-white p-4">
+          <p className="text-xs font-bold uppercase text-slate-500">Horas inoperativas</p>
+          <p className="mt-2 text-2xl font-black tabular-nums text-slate-900">{totalDowntime.toLocaleString('es-PE', { maximumFractionDigits: 1 })} h</p>
+        </article>
+      </section>
+
+      {!hasDailySource && (
+        <p role="status" className="border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
+          El archivo guardado no conserva el detalle diario de horómetros. Vuelve a cargar el Excel de Flota para calcular este periodo; sus incidencias fechadas sí se muestran abajo.
+        </p>
+      )}
+
+      <section className="overflow-hidden border border-slate-200 bg-white">
+        <div className="overflow-x-auto">
+          <table className="min-w-[760px] w-full text-left text-xs">
+            <thead className="bg-[#1A1A2E] text-white">
+              <tr>
+                <th className="px-3 py-2.5">Fecha</th>
+                <th className="px-3 py-2.5">Equipo</th>
+                <th className="px-3 py-2.5">Proveedor</th>
+                <th className="px-3 py-2.5">Tipo</th>
+                <th className="px-3 py-2.5 text-right">Horas usadas</th>
+                <th className="px-3 py-2.5 text-right">Horas inoperativas</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {records.map((record, index) => (
+                <tr key={`${record.fecha}-${record.codigo}-${index}`} className="hover:bg-slate-50">
+                  <td className="whitespace-nowrap px-3 py-2.5">{formatDisplayDate(record.fecha) || record.fecha}</td>
+                  <td className="px-3 py-2.5 font-bold text-slate-900">{record.codigo}</td>
+                  <td className="px-3 py-2.5">{record.proveedor}</td>
+                  <td className="px-3 py-2.5">{record.tipo}</td>
+                  <td className="px-3 py-2.5 text-right tabular-nums">{record.horas_usadas === null ? 'Sin lectura diaria' : `${record.horas_usadas.toLocaleString('es-PE', { maximumFractionDigits: 1 })} h`}</td>
+                  <td className="px-3 py-2.5 text-right tabular-nums">{record.horas_inoperativas.toLocaleString('es-PE', { maximumFractionDigits: 1 })} h</td>
+                </tr>
+              ))}
+              {records.length === 0 && (
+                <tr><td colSpan={6} className="px-4 py-8 text-center text-sm text-slate-500">No hay lecturas de horómetro en el periodo seleccionado.</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="overflow-hidden border border-slate-200 bg-white">
+        <div className="border-b border-slate-200 px-3 py-2.5">
+          <h2 className="text-xs font-black uppercase text-slate-800">Incidencias del periodo · {incidents.length}</h2>
+        </div>
+        <div className="divide-y divide-slate-100">
+          {incidents.map((incident, index) => (
+            <article key={`${incident.fecha}-${incident.codigo}-${index}`} className="grid gap-1 px-3 py-2.5 text-xs sm:grid-cols-[110px_140px_1fr_auto] sm:items-center">
+              <span className="text-slate-500">{formatDisplayDate(incident.fecha) || incident.fecha}</span>
+              <span className="font-bold text-slate-900">{incident.codigo}</span>
+              <span className="text-slate-700">{incident.motivo || incident.tipo_mant}</span>
+              <span className="font-bold tabular-nums text-amber-800">{incident.horas} h</span>
+            </article>
+          ))}
+          {incidents.length === 0 && <p className="px-3 py-6 text-center text-sm text-slate-500">No hay incidencias fechadas en este periodo.</p>}
+        </div>
+      </section>
+    </div>
+  );
+};
 
 export const FleetDashboardSection: React.FC<FleetDashboardSectionProps> = ({
   fleetData,
@@ -55,6 +170,7 @@ export const FleetDashboardSection: React.FC<FleetDashboardSectionProps> = ({
   latestFleetFileName = 'DATA_DASHBOARD_EJECUTIVO.xlsx',
   lastFleetUpdatedAt,
   isPublished = false,
+  analysisPeriod,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadStatus, setUploadStatus] = useState<string>('');
@@ -63,7 +179,7 @@ export const FleetDashboardSection: React.FC<FleetDashboardSectionProps> = ({
   const [chartTypeFilter, setChartTypeFilter] = useState<'ALL' | 'MONTACARGA' | 'ELEVADOR' | 'EXCESO' | 'INOP'>('ALL');
   const [incidenciaTypeFilter, setIncidenciaTypeFilter] = useState<'ALL' | 'CORRECTIVO' | 'PREVENTIVO'>('ALL');
 
-  // Meses disponibles canónicos estrictamente sin duplicados ni variantes en minúsculas (solo los meses de auditoría establecidos)
+  // Meses disponibles canónicos, ordenados por calendario.
   const mesesDisponibles = useMemo(() => {
     const raw = fleetData.meses && fleetData.meses.length > 0 ? fleetData.meses : ['Julio', 'Agosto', 'Setiembre'];
     const canonicalSet = new Set<string>();
@@ -72,10 +188,9 @@ export const FleetDashboardSection: React.FC<FleetDashboardSectionProps> = ({
       if (canon) canonicalSet.add(canon);
     });
 
-    // Meses oficiales del ciclo de auditoría de montacargas establecido (Julio, Agosto, Setiembre)
-    const mesesOficiales = ['Julio', 'Agosto', 'Setiembre'];
-    const ordenados = mesesOficiales.filter((m) => canonicalSet.has(m));
-    return ordenados.length > 0 ? ordenados : ['Julio', 'Agosto', 'Setiembre'];
+    const mesesOrdenados = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const ordenados = mesesOrdenados.filter((month) => canonicalSet.has(month));
+    return ordenados.length > 0 ? ordenados : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   }, [fleetData.meses]);
 
   const [currentMes, setCurrentMes] = useState<string>(() => {
@@ -333,6 +448,17 @@ export const FleetDashboardSection: React.FC<FleetDashboardSectionProps> = ({
 
     XLSX.writeFile(wb, finalDownloadName);
   };
+
+  if (analysisPeriod.granularity !== 'all') {
+    return (
+      <FleetPeriodView
+        fleetData={fleetData}
+        period={analysisPeriod}
+        onUpdateData={handleUploadClick}
+        onOpenPhotoSummary={onOpenPhotoSummary}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6 animate-fadeIn pb-12">

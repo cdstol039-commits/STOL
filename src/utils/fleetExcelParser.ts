@@ -1,5 +1,6 @@
 import * as XLSX from 'xlsx';
-import { FleetDashboardData, FleetEquipo, FleetIncidencia } from '../types/fleet';
+import { FleetDashboardData, FleetEquipo, FleetIncidencia, FleetRegistroDiario } from '../types/fleet';
+import { dateKeyFromValue } from './period';
 
 function normKey(s: any): string {
   return String(s || '')
@@ -9,6 +10,12 @@ function normKey(s: any): string {
     .replace(/[_]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function optionalNumber(value: any): number | null {
+  if (value === null || value === undefined || String(value).trim() === '') return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 /**
@@ -97,6 +104,7 @@ const ALIASES = {
     'DIA': 'Dia',
     'FECHA REGISTRO': 'Fecha_Registro',
     'FECHA DE REGISTRO': 'Fecha_Registro',
+    'FECHA': 'Fecha_Registro',
     'HORA REGISTRO': 'Hora_Registro',
     'HORA DE REGISTRO': 'Hora_Registro',
     'FECHA HORA INICIO': 'Fecha_Hora_Inicio',
@@ -129,6 +137,7 @@ const ALIASES = {
     'DIAS': 'Dia',
     'FECHA REGISTRO': 'Fecha_Registro',
     'FECHA DE REGISTRO': 'Fecha_Registro',
+    'FECHA': 'Fecha_Registro',
     'HORA REGISTRO': 'Hora_Registro',
     'HORA DE REGISTRO': 'Hora_Registro',
     'HOROMETRO MIN': 'Horometro_Min',
@@ -188,8 +197,7 @@ function sheetToObjects(wb: XLSX.WorkBook, name: string, aliasMap: Record<string
 function excelSerialToDate(v: any): Date {
   if (v instanceof Date) return v;
   if (typeof v === 'number') {
-    const d = XLSX.SSF.parse_date_code(v);
-    return new Date(Date.UTC(d.y, d.m - 1, d.d));
+    return new Date((Math.floor(v) - 25569) * 86400000);
   }
   return new Date(v);
 }
@@ -210,6 +218,20 @@ export function parseFleetExcelWorkbook(wb: XLSX.WorkBook): FleetDashboardData {
   if (!dim.length && !horometros.length && !bitacora.length) {
     throw new Error('El archivo no contiene las hojas esperadas (BITACORA, HOROMETROS, DIM_EQUIPOS). Verifique la estructura del archivo Excel.');
   }
+
+  const monthNumber = (month: unknown): number => {
+    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    return months.indexOf(canonicalFleetMonth(month)) + 1;
+  };
+  const recordDate = (row: Record<string, any>): string | null => {
+    const fromDate = dateKeyFromValue(row.Fecha_Registro);
+    if (fromDate) return fromDate;
+    const year = Number(row.Anio);
+    const day = Number(row.Dia);
+    const month = monthNumber(row.Mes);
+    if (year && month && day) return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    return null;
+  };
 
   // Detect unique canonical months from both sheets
   const mesesPresentes = new Set<string>();
@@ -237,10 +259,29 @@ export function parseFleetExcelWorkbook(wb: XLSX.WorkBook): FleetDashboardData {
 
   // Calculate usage from Horometros using canonical month names
   const usageMap: Record<string, { min: number; max: number; explicitUsage: number }> = {};
+  const dailyReadingRows: { date: string; code: string; supplier: string; type: string; explicit: number | null; min: number | null; max: number | null; reading: number | null }[] = [];
   horometros.forEach((r) => {
     const cod = String(r.Codigo_Equipo || '').trim();
     const mes = canonicalFleetMonth(r.Mes);
     if (!cod || !mes) return;
+
+    const date = recordDate(r);
+    if (date) {
+      const min = optionalNumber(r.Horometro_Min);
+      const max = optionalNumber(r.Horometro_Max);
+      const explicit = optionalNumber(r.Horas_Usadas);
+      const reading = optionalNumber(r.Lectura_Horometro);
+      dailyReadingRows.push({
+        date,
+        code: cod,
+        supplier: String(r.Proveedor || '').trim().toUpperCase(),
+        type: String(r.Tipo_Equipo || '').trim().toUpperCase(),
+        explicit: explicit !== null && explicit > 0 ? explicit : null,
+        min,
+        max,
+        reading,
+      });
+    }
 
     const key = `${cod}|${mes}`;
     if (!usageMap[key]) {
@@ -248,14 +289,14 @@ export function parseFleetExcelWorkbook(wb: XLSX.WorkBook): FleetDashboardData {
     }
 
     // Si tiene Horas_Usadas explícito en la fila
-    const horasUsadas = Number(r.Horas_Usadas);
-    if (!isNaN(horasUsadas) && horasUsadas > 0) {
+    const horasUsadas = optionalNumber(r.Horas_Usadas);
+    if (horasUsadas !== null && horasUsadas > 0) {
       usageMap[key].explicitUsage = Math.max(usageMap[key].explicitUsage, horasUsadas);
     }
 
     // Si tiene Lectura_Horometro
-    const lectura = Number(r.Lectura_Horometro);
-    if (!isNaN(lectura)) {
+    const lectura = optionalNumber(r.Lectura_Horometro);
+    if (lectura !== null) {
       usageMap[key].min = Math.min(usageMap[key].min, lectura);
       usageMap[key].max = Math.max(usageMap[key].max, lectura);
     }
@@ -263,6 +304,7 @@ export function parseFleetExcelWorkbook(wb: XLSX.WorkBook): FleetDashboardData {
 
   // Calculate inoperativity from Bitacora using canonical month names and cleaned hours
   const inopMap: Record<string, number> = {};
+  const dailyInopMap: Record<string, number> = {};
   bitacora.forEach((r) => {
     const cod = String(r.Codigo_Equipo || '').trim();
     const mes = canonicalFleetMonth(r.Mes);
@@ -271,6 +313,55 @@ export function parseFleetExcelWorkbook(wb: XLSX.WorkBook): FleetDashboardData {
     const key = `${cod}|${mes}`;
     const h = cleanHoursValue(r.Horas_Inoperativas);
     inopMap[key] = (inopMap[key] || 0) + h;
+    const date = recordDate(r);
+    if (date) {
+      const dailyKey = `${date}|${cod}`;
+      dailyInopMap[dailyKey] = (dailyInopMap[dailyKey] || 0) + h;
+    }
+  });
+
+  const lastReadingByEquipment = new Map<string, number>();
+  const dailyUsageMap = new Map<string, FleetRegistroDiario>();
+  dailyReadingRows.sort((a, b) => a.date.localeCompare(b.date) || a.code.localeCompare(b.code));
+  dailyReadingRows.forEach((row) => {
+    const dailyKey = `${row.date}|${row.code}`;
+    const previousReading = lastReadingByEquipment.get(row.code);
+    const measuredRange = row.min !== null && row.max !== null && row.max >= row.min ? row.max - row.min : null;
+    const readingDelta = row.reading !== null && previousReading !== undefined && row.reading >= previousReading
+      ? row.reading - previousReading
+      : null;
+    const hoursUsed = row.explicit ?? measuredRange ?? readingDelta;
+    if (row.reading !== null) lastReadingByEquipment.set(row.code, row.reading);
+
+    const existing = dailyUsageMap.get(dailyKey);
+    dailyUsageMap.set(dailyKey, {
+      fecha: row.date,
+      codigo: row.code,
+      proveedor: row.supplier || existing?.proveedor || (row.code.startsWith('NOVATRANS') ? 'NOVA' : 'DERCO'),
+      tipo: row.type || existing?.tipo || (row.code.includes('HER') ? 'ELEVADOR' : 'MONTACARGA'),
+      horas_usadas: hoursUsed === null ? existing?.horas_usadas ?? null : (existing?.horas_usadas ?? 0) + hoursUsed,
+      horas_inoperativas: dailyInopMap[dailyKey] || 0,
+    });
+  });
+
+  bitacora.forEach((row) => {
+    const code = String(row.Codigo_Equipo || '').trim();
+    const date = recordDate(row);
+    if (!code || !date) return;
+    const dailyKey = `${date}|${code}`;
+    const existing = dailyUsageMap.get(dailyKey);
+    if (existing) {
+      existing.horas_inoperativas = dailyInopMap[dailyKey] || 0;
+    } else {
+      dailyUsageMap.set(dailyKey, {
+        fecha: date,
+        codigo: code,
+        proveedor: String(row.Proveedor || '').trim().toUpperCase(),
+        tipo: String(row.Tipo_Equipo || '').trim().toUpperCase(),
+        horas_usadas: null,
+        horas_inoperativas: dailyInopMap[dailyKey] || 0,
+      });
+    }
   });
 
   // Equipment dimension table
@@ -359,5 +450,10 @@ export function parseFleetExcelWorkbook(wb: XLSX.WorkBook): FleetDashboardData {
       };
     });
 
-  return { equipos, incidencias, meses: mesesOrden };
+  return {
+    equipos,
+    incidencias,
+    meses: mesesOrden,
+    registrosDiarios: Array.from(dailyUsageMap.values()).sort((a, b) => a.fecha.localeCompare(b.fecha) || a.codigo.localeCompare(b.codigo)),
+  };
 }

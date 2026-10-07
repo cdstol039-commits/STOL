@@ -43,12 +43,15 @@ export const normalizeMonthKey = (raw: any): MonthKey | null => {
   if (str.includes('JUL')) return 'JUL';
   if (str.includes('AGO') || str.includes('AUG')) return 'AGO';
   if (str.includes('SET') || str.includes('SEP')) return 'SET';
+  if (str.includes('OCT')) return 'OCT';
+  if (str.includes('NOV')) return 'NOV';
+  if (str.includes('DIC') || str.includes('DEC')) return 'DIC';
 
   // Si viene una fecha DD/MM/YYYY o YYYY-MM-DD
   const dateMatch = str.match(/[\/\-](\d{1,2})[\/\-]/);
   if (dateMatch) {
     const monthNum = parseInt(dateMatch[1], 10);
-    const monthKeys: MonthKey[] = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SET'];
+    const monthKeys: MonthKey[] = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SET', 'OCT', 'NOV', 'DIC'];
     if (monthNum >= 1 && monthNum <= 9) return monthKeys[monthNum - 1];
   }
 
@@ -71,6 +74,40 @@ export const parseScoreVal = (val: any): number | null => {
   return num;
 };
 
+export const normalizeDateKey = (value: any): string | null => {
+  if (value === undefined || value === null || value === '') return null;
+
+  if (value instanceof Date && !isNaN(value.getTime())) {
+    return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, '0')}-${String(value.getDate()).padStart(2, '0')}`;
+  }
+
+  const text = String(value).trim();
+  if (/^\d+(\.\d+)?$/.test(text)) {
+    const serial = Number(text);
+    if (serial >= 20000 && serial <= 80000) {
+      const date = new Date((Math.floor(serial) - 25569) * 86400000);
+      if (!isNaN(date.getTime())) return date.toISOString().slice(0, 10);
+    }
+  }
+
+  const isoMatch = text.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+  if (isoMatch) {
+    return `${isoMatch[1]}-${isoMatch[2].padStart(2, '0')}-${isoMatch[3].padStart(2, '0')}`;
+  }
+
+  const localMatch = text.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+  if (localMatch) {
+    return `${localMatch[3]}-${localMatch[2].padStart(2, '0')}-${localMatch[1].padStart(2, '0')}`;
+  }
+
+  return null;
+};
+
+const formatDateForDisplay = (value: any, dateKey: string | null): string => {
+  if (!dateKey) return String(value ?? '').trim();
+  return dateKey.split('-').reverse().join('/');
+};
+
 // Limpiador de cadenas de texto de encabezados
 export const cleanColName = (key: string): string => {
   return String(key || '')
@@ -79,6 +116,11 @@ export const cleanColName = (key: string): string => {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 };
+
+const normalizeJoinValue = (value: any): string =>
+  cleanColName(String(value ?? ''))
+    .replace(/[^A-Z0-9]+/g, ' ')
+    .trim();
 
 // Helper para obtener valor de fila buscando entre posibles nombres de columnas
 export const getRowValue = (row: any, candidates: string[]): any => {
@@ -115,7 +157,7 @@ const detectSupervisorInText = (text: string, knownSupervisors: string[]): strin
 
 /**
  * Genera el archivo Excel modelo oficial con las 3 hojas:
- * 1. CONSOLIDADO_OPERACIONES (con notas recalculadas al 60%, 20% y 20%)
+ * 1. CONSOLIDADO_OPERACIONES (con notas ponderadas ingresadas en el archivo)
  * 2. RRHH (con observaciones y motivos de nota)
  * 3. SIG (con observaciones y hallazgos SST)
  * 4. GUIA_FORMATO (con las reglas y especificaciones)
@@ -127,33 +169,30 @@ export const generateSupervisorTemplateWorkbook = (): XLSX.WorkBook => {
   const consolHeaders = [
     'FECHA',
     'SUPERVISOR',
-    'SUP_GENERAL',
     'AREA',
-    'PROCESO',
-    'DESEMPEÑO',
-    'VALOR_OP_60',
-    'VALOR_RRHH_20',
-    'VALOR_SIG_20',
-    'VALOR_TOTAL',
-    'SEMANA',
-    'MES',
+    'PROCESOS',
+    'OBETIVO',
+    'VALORACION',
     'OBSERVACION',
+    'VALOR OP 100%',
+    'VALOR OP 60%',
+    'VALOR RRHH 20%',
+    'VALOR SIG 20%',
+    'VALOR TOTAL',
+    'SEMANA',
+    'NOTA UNITARIA FRANCO',
+    'PONDERADO F',
+    'SUP GENERAL',
+    'NOTA TOTAL FRANCO',
+    'MES',
+    'AÑO',
   ];
 
   const consolRows = [
     consolHeaders,
-    ['18/09/2026', 'Pedro Oliva', 'Aldo Bautista', 'Almacenamiento', 'Control de Inventario', 'Pallets Observados y Regularización', 49.85, 12.60, 16.00, 78.45, 38, 'SET', '12 pallets con más de 72h sin regularizar en buffer.'],
-    ['25/09/2026', 'Pedro Oliva', 'Aldo Bautista', 'Almacenamiento', 'Despacho y Flujo', 'Puntualidad en Rampa', 47.03, 12.60, 16.00, 75.63, 39, 'SET', 'Demora de 55 min en consolidación rampa 4.'],
-    ['02/10/2026', 'Pedro Oliva', 'Aldo Bautista', 'Almacenamiento', 'Productividad Turno', 'Cumplimiento de Turno', 46.06, 12.60, 16.00, 74.66, 40, 'SET', 'Baja cadencia de rotación pasillo central.'],
-    ['18/09/2026', 'Liz Minaya', 'Aldo Bautista', 'Despacho', 'Rotulación y Estiba', 'Etiquetado de Pallets', 52.87, 12.60, 16.00, 81.47, 38, 'SET', 'Pallets en nivel 3 con etiquetas no visibles a radiofrecuencia.'],
-    ['25/09/2026', 'Liz Minaya', 'Aldo Bautista', 'Despacho', 'Control de Inventario Cíclico', 'Exactitud de Conteos', 55.14, 12.60, 16.00, 83.74, 39, 'SET', 'Diferencia de 8 cajas en conteo de abarrotes.'],
-    ['02/10/2026', 'Liz Minaya', 'Aldo Bautista', 'Despacho', 'Auditoría Pre-despacho', 'Control de Furgones', 53.72, 12.60, 16.00, 82.32, 40, 'SET', 'Faltó checklist de precintado en furgón 18.'],
-    ['18/09/2026', 'Jaiter Girón', 'Pedro Morante', 'Recepción', 'Recepción de Mercadería', 'Verificación de Guías', 58.82, 12.60, 16.00, 87.42, 38, 'SET', 'Recepción conforme con pequeña demora en ingreso a WMS.'],
-    ['25/09/2026', 'Jaiter Girón', 'Pedro Morante', 'Recepción', 'Descarga y Estiba', 'Inspección de Parihuelas', 58.65, 12.60, 16.00, 87.25, 39, 'SET', '2 parihuelas rajadas detectadas antes de almacenar.'],
-    ['02/10/2026', 'Jaiter Girón', 'Pedro Morante', 'Recepción', 'Despacho de Mercadería', 'Firma de Conformidad', 59.74, 12.60, 16.00, 88.34, 40, 'SET', 'Conformidad de precinto sin novedad.'],
-    ['18/09/2026', 'Marco Silva', 'Pedro Morante', 'Picking', 'Picking y Clasificación', 'Productividad en Picking', 59.52, 12.60, 16.00, 88.12, 38, 'SET', 'Cumplimiento óptimo de líneas por hora.'],
-    ['25/09/2026', 'Marco Silva', 'Pedro Morante', 'Picking', 'Auditoría Previa', 'Tasa de Errores', 51.05, 12.60, 16.00, 79.65, 39, 'SET', '6 pedidos cruzados en zona de auditoría previa.'],
-    ['02/10/2026', 'Marco Silva', 'Pedro Morante', 'Picking', 'Orden y Limpieza', '5S en Pasillos de Picking', 45.71, 12.60, 16.00, 74.31, 40, 'SET', 'Cajas vacías acumuladas al pie de estantería.'],
+    ['18/09/2026', 'Pedro Oliva', 'Almacenamiento', 'Control de Inventario', 'Pallets Observados y Regularización', 'Bueno', '12 pallets con más de 72h sin regularizar en buffer.', 78.45, 49.85, 12.60, 16.00, 78.45, 38, 80, 49.85, 'Aldo Bautista', 49.85, 'SET', 2026],
+    ['25/09/2026', 'Liz Minaya', 'Despacho', 'Control de Inventario Cíclico', 'Exactitud de Conteos', 'Bueno', 'Diferencia de 8 cajas en conteo de abarrotes.', 83.74, 55.14, 12.60, 16.00, 83.74, 39, 83, 55.14, 'Aldo Bautista', 55.14, 'SET', 2026],
+    ['18/09/2026', 'Jaiter Girón', 'Recepción', 'Recepción de Mercadería', 'Verificación de Guías', 'Bueno', 'Recepción conforme con pequeña demora en ingreso a WMS.', 87.42, 58.82, 12.60, 16.00, 87.42, 38, 87, 58.82, 'Pedro Morante', 58.82, 'SET', 2026],
   ];
 
   const wsConsol = XLSX.utils.aoa_to_sheet(consolRows);
@@ -162,27 +201,20 @@ export const generateSupervisorTemplateWorkbook = (): XLSX.WorkBook => {
   // HOJA 2: RRHH
   const rrhhHeaders = [
     'FECHA',
-    'SUPERVISOR',
+    'AUDITOR',
     'AREA',
     'PROCESOS',
     'OBJETIVO',
     'VALORACION',
-    'VALOR_RH_20',
-    'OBSERVACION',
-    'AUDITOR',
-    'SEVERIDAD',
-    'ACCION_REQUERIDA',
-    'ESTADO',
+    'PONDERADO',
+    'VALOR RRHH',
+    'OBSERVACIONES',
   ];
 
   const rrhhRows = [
     rrhhHeaders,
-    ['11/09/2026', 'Pedro Oliva', 'Almacenamiento', 'Gestión de Asistencia', 'Asistencia y Puntualidad del Personal a Cargo', 63.0, 12.60, 'Se registraron 4 tardanzas y 1 inasistencia no justificada de operadores de radiofrecuencia durante el turno de noche sin reemplazo oportuno.', 'Karla Bolivar', 'Alta', 'Revisión obligatoria del parte de asistencia a las 22:15h y aplicar medidas disciplinarias según RIT.', 'Pendiente'],
-    ['18/09/2026', 'Pedro Oliva', 'Almacenamiento', 'Horas Extras y Descansos', 'Control de Horas Extras y Descanso Médico', 63.0, 12.60, 'Planilla de horas extras enviada con 2 días de retraso fuera del cierre contable semanal.', 'Karla Bolivar', 'Media', 'Establecer reporte preliminar de sobretiempos los días viernes a las 18:00h.', 'En Proceso'],
-    ['11/09/2026', 'Liz Minaya', 'Despacho', 'Gestión de Asistencia', 'Gestión de Horas Extras y Descansos', 63.0, 12.60, 'Registro de horas extras ingresado extemporáneamente fuera de la ventana límite de aprobación en el sistema.', 'Karla Bolivar', 'Alta', 'Respetar rol de descansos obligatorios de 12 horas entre turnos sucesivos.', 'Pendiente'],
-    ['18/09/2026', 'Liz Minaya', 'Despacho', 'Dotación de Turno', 'Cobertura de Puestos Críticos', 63.0, 12.60, '1 operador de apilador cubriendo funciones sin inducción de seguridad actualizada.', 'Karla Bolivar', 'Media', 'Validar credencial y pase de RRHH antes de permitir operación.', 'Levantada'],
-    ['11/09/2026', 'Jaiter Girón', 'Recepción', 'Clima y Comunicación', 'Charlas Motivacionales y Asistencia', 63.0, 12.60, 'Asistencia general con 2 tardanzas leves en ingreso de turno tarde.', 'Karla Bolivar', 'Baja', 'Monitoreo preventivo con jefatura de guardia.', 'Levantada'],
-    ['11/09/2026', 'Marco Silva', 'Picking', 'Rotación de Personal', 'Capacitación en Puesto de Trabajo', 63.0, 12.60, '3 operarios nuevos asignados a picking sin haber completado la prueba de velocidad de escaneo.', 'Karla Bolivar', 'Media', 'Completar matriz de polivalencia antes de asignar pedidos urgentes.', 'En Proceso'],
+    ['18/09/2026', 'Karla Bolivar', 'Almacenamiento', 'Control de Inventario', 'Pallets Observados y Regularización', 63.0, 7.4, 12.60, 'Se detectó una desviación en la regularización de pallets del área.'],
+    ['25/09/2026', 'Karla Bolivar', 'Despacho', 'Control de Inventario Cíclico', 'Exactitud de Conteos', 63.0, 7.4, 12.60, 'Se detectó una diferencia en el conteo cíclico del área.'],
   ];
 
   const wsRRHH = XLSX.utils.aoa_to_sheet(rrhhRows);
@@ -192,26 +224,18 @@ export const generateSupervisorTemplateWorkbook = (): XLSX.WorkBook => {
   const sigHeaders = [
     'FECHA',
     'AUDITOR',
-    'SUPERVISOR',
     'AREA',
     'PROCESOS',
     'OBJETIVO',
     'VALORACION',
-    'VALOR_SIG_20',
-    'OBSERVACION',
-    'SEVERIDAD',
-    'ACCION_REQUERIDA',
-    'ESTADO',
+    'PONDERADO',
+    'VALOR SIG',
+    'OBSERVACIONES',
   ];
 
   const sigRows = [
     sigHeaders,
-    ['03/09/2026', 'Makley Villanueva', 'Pedro Oliva', 'Almacenamiento', 'Seguridad y Salud en el Trabajo', 'Charlas de Seguridad de 5 Minutos y Registro de ATS', 80.0, 16.00, 'Falta de firmas en el formato de charla de 5 minutos del día martes y formato ATS incompleto en zona de racks pasillo 14.', 'Media', 'Llenado y firma digital inmediata antes del arranque de operaciones.', 'Levantada'],
-    ['10/09/2026', 'Makley Villanueva', 'Pedro Oliva', 'Almacenamiento', 'Orden y Limpieza 5S', 'Orden y Limpieza en Pasillos Principales', 80.0, 16.00, 'Parihuelas rotas y film plástico acumulado en pasillos principales obstaculizando el tránsito fluido de montacargas.', 'Media', 'Implementar checklist 5S al cierre de cada ventana horaria.', 'Levantada'],
-    ['17/09/2026', 'Makley Villanueva', 'Liz Minaya', 'Despacho', 'Uso de EPP', 'Inspección de Equipos de Protección Personal', 80.0, 16.00, 'Dos estibadores de rampa sin guantes de maniobra reglamentarios durante la carga pesada.', 'Alta', 'Suspensión inmediata de la maniobra hasta la entrega y uso del EPP reglamentario.', 'Levantada'],
-    ['24/09/2026', 'Makley Villanueva', 'Liz Minaya', 'Despacho', 'Vías de Evacuación', 'Señalización y Bloqueo de Pasadizos', 80.0, 16.00, 'Pallet de descarte ubicado temporalmente frente a extintor PQS #12 en zona de despacho este.', 'Alta', 'Despeje inmediato y demarcación de franja amarilla libre de obstáculos.', 'Levantada'],
-    ['08/09/2026', 'Makley Villanueva', 'Jaiter Girón', 'Recepción', 'Equipos de Emergencia', 'Inspección de Botiquín y Lavaojos', 80.0, 16.00, 'Botiquín de primeros auxilios de recepción con precinto roto y falta de gasas estériles.', 'Baja', 'Reposición inmediata a cargo del tópico médico y precintado nuevo.', 'Levantada'],
-    ['15/09/2026', 'Makley Villanueva', 'Marco Silva', 'Picking', 'Ergonomía y Carga Manual', 'Buenas Prácticas de Manipulación de Cargas', 80.0, 16.00, 'Posturas inadecuadas en levantamiento manual de bultos pesados (+25kg) sin ayuda de transpaleta.', 'Media', 'Re-inducción en técnicas de levantamiento seguro y uso obligatorio de transpaleta.', 'En Proceso'],
+    ['18/09/2026', 'Makley Villanueva', 'Recepción', 'Recepción de Mercadería', 'Verificación de Guías', 80.0, 16.0, 16.0, 'Se detectó una demora menor en la revisión de guías de recepción.'],
   ];
 
   const wsSIG = XLSX.utils.aoa_to_sheet(sigRows);
@@ -223,17 +247,19 @@ export const generateSupervisorTemplateWorkbook = (): XLSX.WorkBook => {
     [''],
     ['REGLA 1: CONSOLIDADO DE OPERACIONES (HOJA 1)'],
     ['- Contiene la evaluación consolidada por supervisor, semana y mes.'],
-    ['- Las columnas VALOR_OP_60 (Operaciones 60%), VALOR_RRHH_20 (RRHH 20%) y VALOR_SIG_20 (SIG 20%) ya están recalculadas de acuerdo a la fórmula oficial ponderada.'],
-    ['- El VALOR_TOTAL es la suma de los 3 pilares: Total = Operaciones (60%) + RRHH (20%) + SIG (20%).'],
+    ['- La aplicación conserva los valores de VALOR_OP_60, VALOR_RRHH_20, VALOR_SIG_20 y VALOR_TOTAL tal como aparecen en esta hoja.'],
+    ['- VALOR_TOTAL es la nota final registrada en el consolidado y no se vuelve a calcular durante la importación.'],
     ['- La meta corporativa es 98% (0.98).'],
     [''],
     ['REGLA 2: HOJA RRHH (HOJA 2)'],
     ['- Contiene el detalle de las observaciones y motivos de nota en el pilar de Recursos Humanos.'],
+    ['- Solo se importan observaciones cuya FECHA también aparece en CONSOLIDADO_OPERACIONES.'],
     ['- Registra faltas de puntualidad, tardanzas, horas extras extemporáneas, descansos médicos y gestión de turnos.'],
     ['- Auditor evaluador principal: Karla Bolívar.'],
     [''],
     ['REGLA 3: HOJA SIG (HOJA 3)'],
     ['- Contiene el detalle de las observaciones y hallazgos del Sistema Integrado de Gestión (Seguridad, Salud en el Trabajo y Medio Ambiente).'],
+    ['- Solo se importan observaciones cuya FECHA también aparece en CONSOLIDADO_OPERACIONES.'],
     ['- Registra charlas de 5 minutos, formatos ATS, inspección de EPP, orden 5S y vías de emergencia.'],
     ['- Auditor evaluador principal: Makley Villanueva.'],
     [''],
@@ -277,6 +303,10 @@ export const parseSupervisorExcelWorkbook = (
         up.includes('SUPERVISOR')
       );
     }) || sheetNames[0];
+  const hasConsolidadoSheet = sheetNames.some((s) => {
+    const up = s.toUpperCase();
+    return up.includes('CONSOLID') || up.includes('OPERAC') || up.includes('BASE') || up.includes('GENERAL') || up.includes('SUPERVISOR');
+  });
 
   const rrhhSheetName = sheetNames.find((s) => {
     const up = s.toUpperCase();
@@ -299,9 +329,49 @@ export const parseSupervisorExcelWorkbook = (
   });
 
   const extractedObservations: SupervisorObservation[] = [];
-  const supervisorsByAreaMap = new Map<string, string>(); // AREA -> SUPERVISOR
+  const consolidatedDates = new Set<string>();
+  const supervisorsByEvaluationMap = new Map<string, Set<string>>();
   const supervisorGeneralMap = new Map<string, string>(); // SUPERVISOR -> SUP GENERAL
   const knownSupervisorsSet = new Set<string>();
+
+  const buildEvaluationKeys = (dateKey: string | null, area: string, process: string, objective: string) => {
+    if (!dateKey) return [];
+    const normalizedArea = normalizeJoinValue(area);
+    const normalizedProcess = normalizeJoinValue(process);
+    const normalizedObjective = normalizeJoinValue(objective);
+    const keys: string[] = [];
+
+    if (normalizedArea && normalizedProcess && normalizedObjective) {
+      keys.push(`${dateKey}|${normalizedArea}|${normalizedProcess}|${normalizedObjective}`);
+    }
+    if (normalizedArea && normalizedProcess) keys.push(`${dateKey}|${normalizedArea}|${normalizedProcess}`);
+    if (normalizedArea && normalizedObjective) keys.push(`${dateKey}|${normalizedArea}|${normalizedObjective}`);
+    if (normalizedArea) keys.push(`${dateKey}|${normalizedArea}`);
+    return keys;
+  };
+
+  const addEvaluationMatch = (dateKey: string | null, area: string, process: string, objective: string, supervisor: string) => {
+    buildEvaluationKeys(dateKey, area, process, objective).forEach((key) => {
+      if (!supervisorsByEvaluationMap.has(key)) supervisorsByEvaluationMap.set(key, new Set());
+      supervisorsByEvaluationMap.get(key)!.add(supervisor);
+    });
+  };
+
+  const findEvaluationSupervisors = (dateKey: string, area: string, process: string, objective: string) => {
+    const keys = buildEvaluationKeys(dateKey, area, process, objective);
+    const normalizedArea = normalizeJoinValue(area);
+    const normalizedProcess = normalizeJoinValue(process);
+    const normalizedObjective = normalizeJoinValue(objective);
+    const preferredKey = normalizedArea && normalizedProcess && normalizedObjective
+      ? keys[0]
+      : normalizedArea && normalizedProcess
+      ? keys.find((key) => key.split('|').length === 3)
+      : normalizedArea && normalizedObjective
+      ? keys.find((key) => key.split('|').length === 3)
+      : keys.find((key) => key.split('|').length === 2);
+    const matches = preferredKey ? supervisorsByEvaluationMap.get(preferredKey) : undefined;
+    return matches ? Array.from(matches) : [];
+  };
 
   // Clonar base de datos previa para preservar meses no incluidos en la carga
   const updatedSupervisorsData: Record<MonthKey, MonthData> = { ...SUPERVISORS_DATA };
@@ -313,9 +383,24 @@ export const parseSupervisorExcelWorkbook = (
     sg: number | null;
     total: number | null;
   }
-  const monthlySupData = new Map<MonthKey, Map<string, Map<number, SupWeekData>>>();
+  const monthlySupData = new Map<MonthKey, Map<string, Map<number, SupWeekData[]>>>();
+  const monthlyEvaluations = new Map<MonthKey, Map<string, import('../data/supervisorsData').SupervisorRecord['evaluations']>>();
   const monthlyWeeks = new Map<MonthKey, Set<number>>();
   const monthlySupGeneral = new Map<MonthKey, Map<string, string>>();
+
+  const storeWeekData = (month: MonthKey, supervisor: string, supervisorGeneral: string, week: number, data: SupWeekData) => {
+    if (!monthlySupData.has(month)) monthlySupData.set(month, new Map());
+    if (!monthlyWeeks.has(month)) monthlyWeeks.set(month, new Set());
+    if (!monthlySupGeneral.has(month)) monthlySupGeneral.set(month, new Map());
+    monthlyWeeks.get(month)!.add(week);
+    monthlySupGeneral.get(month)!.set(supervisor, supervisorGeneral);
+
+    const supervisors = monthlySupData.get(month)!;
+    if (!supervisors.has(supervisor)) supervisors.set(supervisor, new Map());
+    const weeks = supervisors.get(supervisor)!;
+    if (!weeks.has(week)) weeks.set(week, []);
+    weeks.get(week)!.push(data);
+  };
 
   // 2. PARSEAR HOJA 1: CONSOLIDADO DE OPERACIONES
   const consolSheet = wb.Sheets[consolidadoSheetName];
@@ -329,26 +414,27 @@ export const parseSupervisorExcelWorkbook = (
       const supGeneral =
         String(getRowValue(row, ['SUP GENERAL', 'SUP_GENERAL', 'SUPERVISOR GENERAL', 'JEFE'])).trim() || 'Aldo Bautista';
       const rawMes = getRowValue(row, ['MES', 'PERIODO']);
-      const rawFecha = String(getRowValue(row, ['FECHA', 'FEC'])).trim();
+      const rawFechaValue = getRowValue(row, ['FECHA', 'FEC']);
+      const fechaKey = normalizeDateKey(rawFechaValue);
+      const rawFecha = formatDateForDisplay(rawFechaValue, fechaKey);
+      if (fechaKey) consolidatedDates.add(fechaKey);
       const mesKey = normalizeMonthKey(rawMes) || normalizeMonthKey(rawFecha) || 'SET';
       const rawSemana = getRowValue(row, ['SEMANA', 'SEM', 'WK']);
       const semana = parseInt(String(rawSemana).replace(/\D/g, ''), 10);
       const area = String(getRowValue(row, ['AREA', 'UBICACION', 'ZONA'])).trim();
       const proceso = String(getRowValue(row, ['PROCESOS', 'PROCESO', 'ACTIVIDAD'])).trim();
+      const objetivo = String(getRowValue(row, ['OBETIVO', 'OBJETIVO', 'CRITERIO', 'DESEMPENO', 'DESEMPEÑO', 'ESTANDAR'])).trim();
       const observacion = String(getRowValue(row, ['OBSERVACION', 'OBSERVACIONES', 'HALLAZGO', 'MOTIVO'])).trim();
-      const criterio =
-        String(getRowValue(row, ['DESEMPENO', 'CRITERIO', 'DESEMPEÑO', 'ESTANDAR'])).trim() || proceso || 'Operaciones';
+      const criterio = objetivo || proceso || 'Operaciones';
 
       if (!AUDITOR_NAMES.some((a) => sup.toLowerCase().includes(a.toLowerCase()))) {
         knownSupervisorsSet.add(sup);
       }
 
-      if (area && sup) {
-        supervisorsByAreaMap.set(area.toUpperCase(), sup);
-      }
       if (sup && supGeneral) {
         supervisorGeneralMap.set(sup, supGeneral);
       }
+      addEvaluationMatch(fechaKey, area, proceso, objetivo || criterio, sup);
 
       // Valores porcentuales de las columnas del usuario (recalculadas por fórmula):
       // VALOR OP 60%, VALOR RRHH 20%, VALOR SIG 20%, VALOR TOTAL
@@ -361,10 +447,24 @@ export const parseSupervisorExcelWorkbook = (
       const sg20 = parseScoreVal(
         getRowValue(row, ['VALOR_SIG_20', 'VALOR SIG 20%', 'VALOR SIG 20', 'SIG 20%', 'SIG 20', 'VALOR_SIG'])
       );
-      let valTotal = parseScoreVal(getRowValue(row, ['VALOR_TOTAL', 'VALOR TOTAL', 'TOTAL', 'NOTA TOTAL']));
+      const valTotal = parseScoreVal(getRowValue(row, ['VALOR_TOTAL', 'VALOR TOTAL', 'TOTAL', 'NOTA TOTAL']));
 
-      if (valTotal == null && op60 != null) {
-        valTotal = (op60 ?? 0) + (rh20 ?? 0.126) + (sg20 ?? 0.16);
+      if (fechaKey && !isNaN(semana) && semana > 0) {
+        if (!monthlyEvaluations.has(mesKey)) monthlyEvaluations.set(mesKey, new Map());
+        const evaluationsBySupervisor = monthlyEvaluations.get(mesKey)!;
+        if (!evaluationsBySupervisor.has(sup)) evaluationsBySupervisor.set(sup, []);
+        evaluationsBySupervisor.get(sup)!.push({
+          date: rawFecha,
+          dateKey: fechaKey,
+          week: semana,
+          area,
+          process: proceso,
+          objective: objetivo,
+          op: op60,
+          rh: rh20,
+          sg: sg20,
+          total: valTotal,
+        });
       }
 
       // Detectar columnas semanales horizontales (ej. SEM 36, SEM 37, SEM_1, SEM_2)
@@ -379,39 +479,21 @@ export const parseSupervisorExcelWorkbook = (
 
       if (weekCols.length > 0 && mesKey) {
         // Formato horizontal con columnas por semana
-        if (!monthlySupData.has(mesKey)) monthlySupData.set(mesKey, new Map());
-        if (!monthlyWeeks.has(mesKey)) monthlyWeeks.set(mesKey, new Set());
-        if (!monthlySupGeneral.has(mesKey)) monthlySupGeneral.set(mesKey, new Map());
-
-        monthlySupGeneral.get(mesKey)!.set(sup, supGeneral);
-        const supsInMonth = monthlySupData.get(mesKey)!;
-        if (!supsInMonth.has(sup)) supsInMonth.set(sup, new Map());
-
         weekCols.forEach(({ colKey, weekNum }) => {
-          monthlyWeeks.get(mesKey)!.add(weekNum);
           const cellVal = parseScoreVal(row[colKey]);
-          supsInMonth.get(sup)!.set(weekNum, {
-            op: op60 ?? (cellVal ? Math.min(0.6, cellVal * 0.6) : null),
-            rh: rh20 ?? 0.126,
-            sg: sg20 ?? 0.16,
+          storeWeekData(mesKey, sup, supGeneral, weekNum, {
+            op: op60,
+            rh: rh20,
+            sg: sg20,
             total: cellVal,
           });
         });
       } else if (mesKey && !isNaN(semana) && semana > 0) {
         // Formato vertical fila por semana
-        if (!monthlySupData.has(mesKey)) monthlySupData.set(mesKey, new Map());
-        if (!monthlyWeeks.has(mesKey)) monthlyWeeks.set(mesKey, new Set());
-        if (!monthlySupGeneral.has(mesKey)) monthlySupGeneral.set(mesKey, new Map());
-
-        monthlyWeeks.get(mesKey)!.add(semana);
-        monthlySupGeneral.get(mesKey)!.set(sup, supGeneral);
-
-        const supsInMonth = monthlySupData.get(mesKey)!;
-        if (!supsInMonth.has(sup)) supsInMonth.set(sup, new Map());
-        supsInMonth.get(sup)!.set(semana, {
+        storeWeekData(mesKey, sup, supGeneral, semana, {
           op: op60,
-          rh: rh20 ?? 0.126,
-          sg: sg20 ?? 0.16,
+          rh: rh20,
+          sg: sg20,
           total: valTotal,
         });
       }
@@ -457,7 +539,10 @@ export const parseSupervisorExcelWorkbook = (
         const area = String(getRowValue(row, ['AREA', 'UBICACION', 'ZONA'])).trim();
         const proceso = String(getRowValue(row, ['PROCESOS', 'PROCESO', 'ACTIVIDAD'])).trim();
         const objetivo = String(getRowValue(row, ['OBETIVO', 'OBJETIVO', 'CRITERIO', 'INDICADOR'])).trim();
-        const fecha = String(getRowValue(row, ['FECHA', 'FEC'])).trim();
+        const fechaValue = getRowValue(row, ['FECHA', 'FEC']);
+        const fechaKey = normalizeDateKey(fechaValue);
+        const fecha = formatDateForDisplay(fechaValue, fechaKey);
+        if (!fechaKey || !consolidatedDates.has(fechaKey)) return;
         const rawMes = getRowValue(row, ['MES', 'PERIODO']);
         const mesKey = normalizeMonthKey(rawMes) || normalizeMonthKey(fecha) || 'SET';
         const rawSemana = getRowValue(row, ['SEMANA', 'SEM', 'WK']);
@@ -467,28 +552,24 @@ export const parseSupervisorExcelWorkbook = (
         const accion = String(getRowValue(row, ['ACCION_REQUERIDA', 'ACCION', 'CORRECTIVA', 'RECOMENDACION'])).trim();
         const estado = (String(getRowValue(row, ['ESTADO', 'STATUS'])).trim() as any) || 'Pendiente';
 
-        // Identificar supervisor: explícito, por área mapeada, o detectado en el texto de observación
+        // Hojas RRHH/SIG no siempre incluyen supervisor; vincular la evaluación por sus campos compartidos.
         let supervisor = String(getRowValue(row, ['SUPERVISOR', 'NOMBRE', 'RESPONSABLE'])).trim();
-        if (!supervisor && area) {
-          supervisor = supervisorsByAreaMap.get(area.toUpperCase()) || '';
-        }
         if (!supervisor) {
           const detected = detectSupervisorInText(observacion, allKnownSups);
           if (detected) supervisor = detected;
         }
+        const matchedSupervisors = supervisor
+          ? [supervisor]
+          : findEvaluationSupervisors(fechaKey!, area, proceso, objetivo);
 
-        const rhVal = parseScoreVal(getRowValue(row, ['VALOR_RH_20', 'VALOR RH 20%', 'VALOR RH 20', 'VALOR RRHH 20%']));
+        const rhVal = parseScoreVal(getRowValue(row, ['VALOR_RH_20', 'VALOR RRHH', 'VALOR RH 20%', 'VALOR RH 20', 'VALOR RRHH 20%']));
         const descVal = rhVal != null ? Math.max(0, (0.2 - rhVal) * 100) : 7.4;
 
         let severidad: 'alta' | 'media' | 'baja' = 'media';
         if (severidadRaw.includes('alta') || descVal > 6) severidad = 'alta';
         else if (severidadRaw.includes('baja') || descVal <= 3) severidad = 'baja';
 
-        const targetSupervisors = supervisor
-          ? [supervisor]
-          : allKnownSups.length > 0
-          ? allKnownSups.slice(0, 2)
-          : ['Pedro Oliva', 'Liz Minaya'];
+        const targetSupervisors = matchedSupervisors;
 
         targetSupervisors.forEach((supName) => {
           if (AUDITOR_NAMES.some((a) => supName.toLowerCase().includes(a.toLowerCase()))) return;
@@ -527,7 +608,10 @@ export const parseSupervisorExcelWorkbook = (
         const area = String(getRowValue(row, ['AREA', 'UNIFICACION AREA', 'UBICACION', 'ZONA'])).trim();
         const proceso = String(getRowValue(row, ['PROCESOS', 'PROCESO', 'ACTIVIDAD'])).trim();
         const objetivo = String(getRowValue(row, ['OBETIVO', 'OBJETIVO', 'CRITERIO', 'ESTANDAR'])).trim();
-        const fecha = String(getRowValue(row, ['FECHA', 'FEC'])).trim();
+        const fechaValue = getRowValue(row, ['FECHA', 'FEC']);
+        const fechaKey = normalizeDateKey(fechaValue);
+        const fecha = formatDateForDisplay(fechaValue, fechaKey);
+        if (!fechaKey || !consolidatedDates.has(fechaKey)) return;
         const rawMes = getRowValue(row, ['MES', 'PERIODO']);
         const mesKey = normalizeMonthKey(rawMes) || normalizeMonthKey(fecha) || 'SET';
         const rawSemana = getRowValue(row, ['SEMANA', 'SEM', 'WK']);
@@ -537,26 +621,22 @@ export const parseSupervisorExcelWorkbook = (
         const estado = (String(getRowValue(row, ['ESTADO', 'STATUS'])).trim() as any) || 'Levantada';
 
         let supervisor = String(getRowValue(row, ['SUPERVISOR', 'NOMBRE', 'RESPONSABLE'])).trim();
-        if (!supervisor && area) {
-          supervisor = supervisorsByAreaMap.get(area.toUpperCase()) || '';
-        }
         if (!supervisor) {
           const detected = detectSupervisorInText(observacion, allKnownSups);
           if (detected) supervisor = detected;
         }
+        const matchedSupervisors = supervisor
+          ? [supervisor]
+          : findEvaluationSupervisors(fechaKey!, area, proceso, objetivo);
 
-        const sigVal = parseScoreVal(getRowValue(row, ['VALOR_SIG_20', 'VALOR SIG 20%', 'VALOR SIG 20', 'SIG 20%']));
+        const sigVal = parseScoreVal(getRowValue(row, ['VALOR_SIG_20', 'VALOR SIG', 'VALOR SIG 20%', 'VALOR SIG 20', 'SIG 20%']));
         const descVal = sigVal != null ? Math.max(0, (0.2 - sigVal) * 100) : 4.0;
 
         let severidad: 'alta' | 'media' | 'baja' = 'media';
         if (severidadRaw.includes('alta') || descVal > 5) severidad = 'alta';
         else if (severidadRaw.includes('baja') || descVal <= 2) severidad = 'baja';
 
-        const targetSupervisors = supervisor
-          ? [supervisor]
-          : allKnownSups.length > 0
-          ? allKnownSups.slice(0, 2)
-          : ['Pedro Oliva', 'Liz Minaya', 'Jaiter Girón'];
+        const targetSupervisors = matchedSupervisors;
 
         targetSupervisors.forEach((supName) => {
           if (AUDITOR_NAMES.some((a) => supName.toLowerCase().includes(a.toLowerCase()))) return;
@@ -630,6 +710,10 @@ export const parseSupervisorExcelWorkbook = (
 
     updatedMonthsCount++;
     const supervisorRecords: SupervisorRecord[] = [];
+    const average = (values: (number | null)[]): number | null => {
+      const valid = values.filter((value): value is number => value != null);
+      return valid.length > 0 ? valid.reduce((sum, value) => sum + value, 0) / valid.length : null;
+    };
 
     supsInMonth.forEach((weekMap, supName) => {
       const opArray: (number | null)[] = [];
@@ -638,14 +722,16 @@ export const parseSupervisorExcelWorkbook = (
       const totalArray: (number | null)[] = [];
 
       weekNumbers.forEach((w) => {
-        const wData = weekMap.get(w);
-        opArray.push(wData ? wData.op : null);
-        rhArray.push(wData ? wData.rh : null);
-        sgArray.push(wData ? wData.sg : null);
-        totalArray.push(wData ? wData.total : null);
+        const weekRows = weekMap.get(w) || [];
+        opArray.push(average(weekRows.map((row) => row.op)));
+        rhArray.push(average(weekRows.map((row) => row.rh)));
+        sgArray.push(average(weekRows.map((row) => row.sg)));
+        totalArray.push(average(weekRows.map((row) => row.total)));
       });
 
-      const validTotals = totalArray.filter((v): v is number => v != null);
+      const validTotals = Array.from(weekMap.values())
+        .flatMap((weekRows) => weekRows.map((row) => row.total))
+        .filter((value): value is number => value != null);
       const avgTotal =
         validTotals.length > 0 ? validTotals.reduce((a, b) => a + b, 0) / validTotals.length : 0.8;
       const supGeneral =
@@ -655,6 +741,8 @@ export const parseSupervisorExcelWorkbook = (
         n: supName,
         t: supGeneral,
         a: avgTotal,
+        evaluations: monthlyEvaluations.get(mesKey)?.get(supName) || [],
+        total: totalArray,
         op: opArray,
         rh: rhArray,
         sg: sgArray,
@@ -665,14 +753,10 @@ export const parseSupervisorExcelWorkbook = (
     supervisorRecords.sort((a, b) => b.a - a.a);
 
     // Promedio total semanal wt
-    const wt: number[] = weekNumbers.map((_, i) => {
-      const weekVals = supervisorRecords
-        .map((s) => {
-          const op = s.op[i];
-          if (op == null) return null;
-          return op + (s.rh[i] ?? 0) + (s.sg[i] ?? 0);
-        })
-        .filter((v): v is number => v != null);
+    const wt: number[] = weekNumbers.map((weekNumber) => {
+      const weekVals = Array.from(supsInMonth.values())
+        .flatMap((weekMap) => (weekMap.get(weekNumber) || []).map((row) => row.total))
+        .filter((value): value is number => value != null);
       return weekVals.length > 0 ? weekVals.reduce((a, b) => a + b, 0) / weekVals.length : 0.83;
     });
 
@@ -709,7 +793,7 @@ export const parseSupervisorExcelWorkbook = (
 
   // Si no se extrajeron observaciones nuevas pero sí la matriz, fusionar con las semillas
   const finalObservations =
-    extractedObservations.length > 0
+    extractedObservations.length > 0 || hasConsolidadoSheet
       ? extractedObservations
       : INITIAL_SUPERVISOR_OBSERVATIONS;
 

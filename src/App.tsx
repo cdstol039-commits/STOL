@@ -9,6 +9,8 @@ import { PocketRecordsTable } from './components/pockets/PocketRecordsTable';
 import { MemosDashboard } from './components/memos/MemosDashboard';
 import { InductionDashboard } from './components/induction/InductionDashboard';
 import { ReportsDashboard } from './components/reports/ReportsDashboard';
+import { ExecutiveSummaryDashboard } from './components/reports/ExecutiveSummaryDashboard';
+import { GlobalPeriodFilter } from './components/common/GlobalPeriodFilter';
 import { RolesDashboard } from './components/roles/RolesDashboard';
 import { FleetDashboardSection } from './components/fleet/FleetDashboardSection';
 import { DataUploadModal } from './components/upload/DataUploadModal';
@@ -32,9 +34,11 @@ import {
 } from './components/common/ExecutiveSummaryPhotoModal';
 import { PocketAuditRecord, AppUser, MemoRecord, InductionRecord, FilterState, PocketInventoryItem } from './types';
 import { FleetDashboardData } from './types/fleet';
+import { PeriodSelection } from './types/period';
 import { PalletObservation } from './types/pallets';
 import { syncPasswordFromServer } from './utils/authUtils';
 import { formatDisplayDate } from './utils/normalizer';
+import { matchesPeriod } from './utils/period';
 import {
   getLatestAuditData,
   persistLatestAuditData,
@@ -213,7 +217,7 @@ export default function App() {
   });
 
   // 3. Navigation & Layout State
-  const [activeTab, setActiveTab] = useState<TabId>('pockets');
+  const [activeTab, setActiveTab] = useState<TabId>('resumen');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // 4. Main Filters State (Defaults to: Todos los Meses, Todas las Semanas, Todas las Áreas)
@@ -226,6 +230,19 @@ export default function App() {
     area: 'TODAS',
     searchQuery: '',
   });
+  const [analysisPeriod, setAnalysisPeriod] = useState<PeriodSelection>({ granularity: 'all', value: '' });
+  const handleAnalysisPeriodChange = (period: PeriodSelection) => {
+    setAnalysisPeriod(period);
+    setFilters((current) => ({
+      ...current,
+      meses: [],
+      mes: 'TODOS',
+      semanas: [],
+      semana: 'TODAS',
+      fechas: [],
+      fecha: undefined,
+    }));
+  };
 
   // 5. Modals State
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
@@ -247,6 +264,7 @@ export default function App() {
         memos: 'memos',
         induccion: 'induccion',
         reportes: 'todas',
+        resumen: 'todas',
         registros: 'pockets',
       };
       setPhotoSummaryScope(mapTabToScope[activeTab] || 'todas');
@@ -984,6 +1002,27 @@ export default function App() {
     });
   }, [pocketRecords, filters]);
 
+  const periodPocketRecords = useMemo(
+    () => pocketRecords.filter((record) => matchesPeriod(record.fecha, analysisPeriod)),
+    [pocketRecords, analysisPeriod]
+  );
+  const periodFilteredPocketRecords = useMemo(
+    () => filteredPocketRecords.filter((record) => matchesPeriod(record.fecha, analysisPeriod)),
+    [filteredPocketRecords, analysisPeriod]
+  );
+  const periodPalletRecords = useMemo(
+    () => palletRecords.filter((record) => matchesPeriod(record.fecha, analysisPeriod)),
+    [palletRecords, analysisPeriod]
+  );
+  const periodMemos = useMemo(
+    () => memos.filter((record) => matchesPeriod(record.fecha, analysisPeriod)),
+    [memos, analysisPeriod]
+  );
+  const periodInductions = useMemo(
+    () => inductions.filter((record) => matchesPeriod(record.fecha, analysisPeriod)),
+    [inductions, analysisPeriod]
+  );
+
   // Handle password unlock
   const handleUnlockSuccess = (authenticatedUser: AppUser) => {
     setIsUnlocked(true);
@@ -1176,7 +1215,9 @@ export default function App() {
 
   // Friendly title for the breadcrumb
   const activeViewTitle =
-    activeTab === 'pockets'
+    activeTab === 'resumen'
+      ? 'Resumen Ejecutivo'
+      : activeTab === 'pockets'
       ? 'Control de Pockets'
       : activeTab === 'pallets'
       ? 'Control de Pallets Observados – Seguimiento y Regularización'
@@ -1245,10 +1286,24 @@ export default function App() {
 
         {/* Active Content Body */}
         <main className="flex-1 p-4 max-w-[1700px] w-full mx-auto">
+          {activeTab !== 'roles' && (
+            <GlobalPeriodFilter value={analysisPeriod} onChange={handleAnalysisPeriodChange} />
+          )}
+
+          {activeTab === 'resumen' && (
+            <ExecutiveSummaryDashboard
+              pocketRecords={periodPocketRecords}
+              palletRecords={periodPalletRecords}
+              fleetData={fleetData}
+              analysisPeriod={analysisPeriod}
+              onNavigate={setActiveTab}
+            />
+          )}
+
           {activeTab === 'pockets' && (
             <PocketsDashboard
-              records={filteredPocketRecords}
-              allRecords={pocketRecords}
+              records={periodFilteredPocketRecords}
+              allRecords={periodPocketRecords}
               filters={filters}
               onFilterChange={setFilters}
               filterMonths={availableMonths}
@@ -1285,7 +1340,8 @@ export default function App() {
 
           {activeTab === 'pallets' && (
             <PalletsDashboard
-              allRecords={palletRecords}
+              allRecords={periodPalletRecords}
+              analysisPeriod={analysisPeriod}
               isUnlocked={isUnlocked}
               onOpenAccessKeyModal={() => setIsAccessKeyModalOpen(true)}
               onUpdateRecords={handleUpdatePalletRecords}
@@ -1306,22 +1362,26 @@ export default function App() {
                 latestFleetFileName={latestFleetFileName}
                 lastFleetUpdatedAt={lastFleetUpdatedAt}
                 isPublished={isPublished}
+                analysisPeriod={analysisPeriod}
               />
             </div>
           )}
 
           {activeTab === 'supervisores' && (
             <div id="supervisores-dashboard-view">
-              <SupervisorsDashboard onOpenPhotoSummary={() => handleOpenPhotoSummary('supervisores')} />
+              <SupervisorsDashboard
+                analysisPeriod={analysisPeriod}
+                onOpenPhotoSummary={() => handleOpenPhotoSummary('supervisores')}
+              />
             </div>
           )}
 
           {activeTab === 'reportes' && (
             <ReportsDashboard
-              pocketRecords={pocketRecords}
-              palletRecords={palletRecords}
-              memos={memos}
-              inductions={inductions}
+              pocketRecords={periodPocketRecords}
+              palletRecords={periodPalletRecords}
+              memos={periodMemos}
+              inductions={periodInductions}
               filters={filters}
               onOpenPhotoSummary={() => handleOpenPhotoSummary('todas')}
             />
@@ -1329,7 +1389,7 @@ export default function App() {
 
           {activeTab === 'registros' && (
             <PocketRecordsTable
-              records={filteredPocketRecords}
+              records={periodFilteredPocketRecords}
               currentUser={effectiveUser}
               onAddRecord={handleAddPocketRecord}
               onDeleteRecord={handleDeletePocketRecord}

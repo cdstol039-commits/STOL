@@ -23,8 +23,18 @@ export interface FleetIncidencia {
   motivo: string;
 }
 
+export interface FleetRegistroDiario {
+  fecha: string;
+  codigo: string;
+  proveedor: string;
+  tipo: string;
+  horas_usadas: number | null;
+  horas_inoperativas: number;
+}
+
 export interface FleetDashboardData {
   equipos: FleetEquipo[];
   incidencias: FleetIncidencia[];
   meses: string[];
+  registrosDiarios?: FleetRegistroDiario[];
 }

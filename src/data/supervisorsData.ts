@@ -2,9 +2,24 @@ export interface SupervisorRecord {
   n: string; // Nombre del supervisor
   t: string; // Supervisor general asignado
   a: number; // Promedio total (0 - 1)
+  evaluations?: SupervisorEvaluation[];
+  total?: (number | null)[]; // Total semanal exacto importado del consolidado
   op: (number | null)[]; // Operaciones (60%) por semana
   rh: (number | null)[]; // RRHH (20%) por semana
   sg: (number | null)[]; // SIG (20%) por semana
+}
+
+export interface SupervisorEvaluation {
+  date: string;
+  dateKey: string;
+  week: number;
+  area: string;
+  process: string;
+  objective: string;
+  op: number | null;
+  rh: number | null;
+  sg: number | null;
+  total: number | null;
 }
 
 export interface GeneralSupervisorScore {
@@ -20,7 +35,7 @@ export interface MonthData {
   g: number; // Promedio mensual general
 }
 
-export type MonthKey = 'ENE' | 'FEB' | 'MAR' | 'ABR' | 'MAY' | 'JUN' | 'JUL' | 'AGO' | 'SET';
+export type MonthKey = 'ENE' | 'FEB' | 'MAR' | 'ABR' | 'MAY' | 'JUN' | 'JUL' | 'AGO' | 'SET' | 'OCT' | 'NOV' | 'DIC';
 
 export const AUDITOR_NAMES = ['Karla Bolivar', 'Makley Villanueva'] as const;
 
@@ -30,7 +45,7 @@ export const isAuditorName = (name?: string | null): boolean => {
   return clean.includes('karla') || clean.includes('bolivar') || clean.includes('makley') || clean.includes('villanueva');
 };
 
-export type QuarterKey = 'T1' | 'T2' | 'T3';
+export type QuarterKey = 'T1' | 'T2' | 'T3' | 'T4';
 
 export interface QuarterDefinition {
   key: QuarterKey;
@@ -43,6 +58,7 @@ export const QUARTERS: QuarterDefinition[] = [
   { key: 'T1', label: 'Primer Trimestre (Enero – Marzo)', shortLabel: 'T1 (Ene - Mar)', months: ['ENE', 'FEB', 'MAR'] },
   { key: 'T2', label: 'Segundo Trimestre (Abril – Junio)', shortLabel: 'T2 (Abr - Jun)', months: ['ABR', 'MAY', 'JUN'] },
   { key: 'T3', label: 'Tercer Trimestre (Julio – Setiembre)', shortLabel: 'T3 (Jul - Set)', months: ['JUL', 'AGO', 'SET'] },
+  { key: 'T4', label: 'Cuarto Trimestre (Octubre – Diciembre)', shortLabel: 'T4 (Oct - Dic)', months: ['OCT', 'NOV', 'DIC'] },
 ];
 
 export interface SupervisorObservation {
@@ -400,6 +416,9 @@ export const MONTH_LABELS: Record<MonthKey, string> = {
   JUL: 'Julio',
   AGO: 'Agosto',
   SET: 'Setiembre',
+  OCT: 'Octubre',
+  NOV: 'Noviembre',
+  DIC: 'Diciembre',
 };
 
 export const SUPERVISORS_DATA: Record<MonthKey, MonthData> = {
@@ -528,5 +547,8 @@ export const SUPERVISORS_DATA: Record<MonthKey, MonthData> = {
     wt: [0.8531, 0.8434, 0.8324, 0.8356, 0.8224],
     t: [{ n: "Aldo Bautista", a: 0.7894 }, { n: "Pedro Morante", a: 0.8507 }],
     g: 0.8396
-  }
+  },
+  OCT: { w: [], s: [], wt: [], t: [], g: 0 },
+  NOV: { w: [], s: [], wt: [], t: [], g: 0 },
+  DIC: { w: [], s: [], wt: [], t: [], g: 0 },
 };

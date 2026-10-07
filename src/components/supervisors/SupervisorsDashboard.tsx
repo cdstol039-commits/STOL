@@ -48,6 +48,8 @@ import {
   ParsedSupervisorWorkbookResult,
   generateSupervisorTemplateWorkbook,
 } from '../../utils/supervisorExcelParser';
+import { PeriodSelection } from '../../types/period';
+import { matchesPeriod } from '../../utils/period';
 
 const PALETTE = ['#1f6feb', '#2da44e', '#d9480f', '#8250df', '#bf8700', '#cf222e', '#0891b2', '#4f46e5'];
 
@@ -64,6 +66,7 @@ const formatDelta = (delta: number | null | undefined): string => {
 };
 
 const getSupervisorWeekTotal = (s: SupervisorRecord, i: number): number | null => {
+  if (s.total?.[i] !== undefined) return s.total[i];
   const op = s.op[i];
   if (op == null) return null;
   const rh = s.rh[i] ?? 0;
@@ -87,9 +90,118 @@ interface QuarterlySupervisorRow {
 
 export interface SupervisorsDashboardProps {
   onOpenPhotoSummary?: () => void;
+  analysisPeriod: PeriodSelection;
 }
 
-export const SupervisorsDashboard: React.FC<SupervisorsDashboardProps> = ({ onOpenPhotoSummary }) => {
+interface SupervisorPeriodViewProps {
+  supervisorsData: Record<MonthKey, MonthData>;
+  period: PeriodSelection;
+  onUpdateData: () => void;
+}
+
+const SupervisorPeriodView: React.FC<SupervisorPeriodViewProps> = ({ supervisorsData, period, onUpdateData }) => {
+  const evaluations = Object.values(supervisorsData).flatMap((monthData) =>
+    monthData.s.flatMap((supervisor) =>
+      (supervisor.evaluations || [])
+        .filter((evaluation) => matchesPeriod(evaluation.dateKey, period))
+        .map((evaluation) => ({ ...evaluation, supervisor: supervisor.n, supervisorGeneral: supervisor.t }))
+    )
+  ).filter((evaluation) => !isAuditorName(evaluation.supervisor))
+    .sort((a, b) => a.dateKey.localeCompare(b.dateKey) || a.supervisor.localeCompare(b.supervisor));
+  const hasDailyEvaluations = Object.values(supervisorsData).some((monthData) =>
+    monthData.s.some((supervisor) => (supervisor.evaluations || []).length > 0)
+  );
+  const average = evaluations.length > 0
+    ? evaluations.reduce((sum, evaluation) => sum + (evaluation.total || 0), 0) / evaluations.length
+    : null;
+
+  return (
+    <div className="w-full space-y-5 animate-in fade-in duration-200">
+      <header className="flex flex-wrap items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <p className="text-xs font-bold uppercase text-[#1F6F8B]">Evaluaciones del periodo</p>
+          <h1 className="mt-1 text-2xl font-black text-[#1A1A2E]">Desempeño de Supervisores</h1>
+          <p className="mt-1 text-sm text-slate-600">Las notas se muestran tal como fueron registradas en el consolidado.</p>
+        </div>
+        <button
+          type="button"
+          onClick={onUpdateData}
+          className="inline-flex items-center gap-2 rounded-md bg-[#1A1A2E] px-3 py-2 text-xs font-bold text-white hover:bg-slate-700"
+        >
+          <FileSpreadsheet className="h-4 w-4" /> Actualizar Excel
+        </button>
+      </header>
+
+      <section aria-label="Resumen del periodo de supervisores" className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <article className="border border-slate-200 bg-white p-4">
+          <p className="text-xs font-bold uppercase text-slate-500">Evaluaciones</p>
+          <p className="mt-2 text-2xl font-black tabular-nums text-slate-900">{evaluations.length}</p>
+        </article>
+        <article className="border border-slate-200 bg-white p-4">
+          <p className="text-xs font-bold uppercase text-slate-500">Supervisores</p>
+          <p className="mt-2 text-2xl font-black tabular-nums text-slate-900">
+            {new Set(evaluations.map((evaluation) => evaluation.supervisor)).size}
+          </p>
+        </article>
+        <article className="border border-slate-200 bg-white p-4">
+          <p className="text-xs font-bold uppercase text-slate-500">Promedio VALOR TOTAL</p>
+          <p className="mt-2 text-2xl font-black tabular-nums text-slate-900">
+            {average === null ? '—' : formatPct(average)}
+          </p>
+        </article>
+      </section>
+
+      <section className="overflow-hidden border border-slate-200 bg-white">
+        <div className="overflow-x-auto">
+          <table className="min-w-[1050px] w-full text-left text-xs">
+            <thead className="bg-[#1A1A2E] text-white">
+              <tr>
+                <th className="px-3 py-2.5">Fecha</th>
+                <th className="px-3 py-2.5">Supervisor</th>
+                <th className="px-3 py-2.5">Supervisor general</th>
+                <th className="px-3 py-2.5">Área</th>
+                <th className="px-3 py-2.5">Proceso / objetivo</th>
+                <th className="px-3 py-2.5 text-right">OP 60%</th>
+                <th className="px-3 py-2.5 text-right">RRHH 20%</th>
+                <th className="px-3 py-2.5 text-right">SIG 20%</th>
+                <th className="px-3 py-2.5 text-right">Total original</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {evaluations.map((evaluation, index) => (
+                <tr key={`${evaluation.dateKey}-${evaluation.supervisor}-${index}`} className="hover:bg-slate-50">
+                  <td className="whitespace-nowrap px-3 py-2.5">{evaluation.date}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-bold text-slate-900">{evaluation.supervisor}</td>
+                  <td className="whitespace-nowrap px-3 py-2.5">{evaluation.supervisorGeneral}</td>
+                  <td className="px-3 py-2.5">{evaluation.area}</td>
+                  <td className="px-3 py-2.5">
+                    <span className="block font-semibold text-slate-800">{evaluation.process}</span>
+                    <span className="block text-slate-500">{evaluation.objective}</span>
+                  </td>
+                  <td className="px-3 py-2.5 text-right tabular-nums">{formatPct(evaluation.op)}</td>
+                  <td className="px-3 py-2.5 text-right tabular-nums">{formatPct(evaluation.rh)}</td>
+                  <td className="px-3 py-2.5 text-right tabular-nums">{formatPct(evaluation.sg)}</td>
+                  <td className="px-3 py-2.5 text-right font-black tabular-nums">{formatPct(evaluation.total)}</td>
+                </tr>
+              ))}
+              {evaluations.length === 0 && (
+                <tr>
+                  <td colSpan={9} className="px-4 py-10 text-center text-sm text-slate-500">
+                    {hasDailyEvaluations
+                      ? 'No hay evaluaciones para el periodo seleccionado.'
+                      : 'Este Excel se importó antes de guardar el detalle por fecha. Vuelve a cargar el consolidado para consultar periodos diarios.'}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export const SupervisorsDashboard: React.FC<SupervisorsDashboardProps> = ({ onOpenPhotoSummary, analysisPeriod }) => {
   const [activeView, setActiveView] = useState<DashboardViewMode>('mensual');
   const [selectedMonth, setSelectedMonth] = useState<MonthKey>('SET');
   const [selectedQuarter, setSelectedQuarter] = useState<QuarterKey>('T3');
@@ -893,6 +1005,16 @@ export const SupervisorsDashboard: React.FC<SupervisorsDashboardProps> = ({ onOp
     XLSX.writeFile(wb, 'PLANTILLA_CONSOLIDADO_OPERACIONES_RRHH_SIG_2026.xlsx');
   };
 
+  if (analysisPeriod.granularity !== 'all') {
+    return (
+      <SupervisorPeriodView
+        supervisorsData={supervisorsData}
+        period={analysisPeriod}
+        onUpdateData={() => setIsUploadModalOpen(true)}
+      />
+    );
+  }
+
   return (
     <div className="w-full space-y-5 animate-in fade-in duration-200">
       {/* 1. Header Principal y Navegación de Vistas */}
@@ -1036,7 +1158,7 @@ export const SupervisorsDashboard: React.FC<SupervisorsDashboardProps> = ({ onOp
               <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
                 activeView === 'trimestral' ? 'bg-white text-blue-900' : 'bg-blue-100 text-blue-900'
               }`}>
-                T1 · T2 · T3
+                T1 · T2 · T3 · T4
               </span>
             </button>
 

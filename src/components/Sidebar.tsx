@@ -20,12 +20,13 @@ import {
   LogOut,
   Award,
   Camera,
+  LayoutDashboard,
 } from 'lucide-react';
 import { StolLogo } from './Header';
 import { ForkliftIcon } from './icons/ForkliftIcon';
 import { AppUser } from '../types';
 
-export type TabId = 'pockets' | 'pallets' | 'memos' | 'induccion' | 'montacargas' | 'supervisores' | 'reportes' | 'registros' | 'roles';
+export type TabId = 'resumen' | 'pockets' | 'pallets' | 'memos' | 'induccion' | 'montacargas' | 'supervisores' | 'reportes' | 'registros' | 'roles';
 
 interface SidebarProps {
   activeTab: TabId;
@@ -167,6 +168,44 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Navigation Links */}
       <div className="flex-1 overflow-y-auto p-2 space-y-1">
+        <button
+          onClick={() => onChangeTab('resumen')}
+          title="Resumen Ejecutivo"
+          className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'resumen'
+              ? 'bg-[#1A1A2E] text-white shadow-xs border-l-4 border-[#E0A23A]'
+              : 'text-[#1A1A2E] hover:bg-[#F4F6F7]'
+          }`}
+        >
+          <LayoutDashboard className={`w-4 h-4 shrink-0 ${activeTab === 'resumen' ? 'text-[#E0A23A]' : 'text-[#1F6F8B]'}`} />
+          {!collapsed && <span>Resumen Ejecutivo</span>}
+        </button>
+
+        {/* 1. Pestaña Principal: Desempeño de Supervisores */}
+        <div>
+          <button
+            onClick={() => onChangeTab('supervisores')}
+            title="Evaluación de Desempeño de Supervisores 2026"
+            className={`w-full flex items-center justify-between px-2.5 py-2 rounded-md text-xs font-bold transition-all cursor-pointer ${
+              activeTab === 'supervisores'
+                ? 'bg-[#1A1A2E] text-white shadow-xs border-l-4 border-[#1f6feb]'
+                : 'text-[#1A1A2E] hover:bg-[#F4F6F7] hover:text-[#1A1A2E]'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Award className={`w-4 h-4 shrink-0 ${activeTab === 'supervisores' ? 'text-amber-400' : 'text-blue-600'}`} />
+              {!collapsed && <span>Desempeño Supervisores</span>}
+            </div>
+            {!collapsed && (
+              <span className={`text-[10px] font-black px-1.5 py-0.2 rounded-full shrink-0 ${
+                activeTab === 'supervisores' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-900 border border-blue-200'
+              }`}>
+                2026
+              </span>
+            )}
+          </button>
+        </div>
+
         {/* Section: AUDITORÍA (Collapsible group) */}
         <div>
           <button
@@ -272,35 +311,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 }`}
               >
                 {fleetCount}
-              </span>
-            )}
-          </button>
-        </div>
-
-        {/* 3. Pestaña Principal Independiente: Desempeño Supervisores */}
-        <div>
-          <button
-            onClick={() => onChangeTab('supervisores')}
-            title="Evaluación de Desempeño de Supervisores 2026"
-            className={`w-full flex items-center justify-between px-2.5 py-2 rounded-md text-xs font-bold transition-all cursor-pointer ${
-              activeTab === 'supervisores'
-                ? 'bg-[#1A1A2E] text-white shadow-xs border-l-4 border-[#1f6feb]'
-                : 'text-[#1A1A2E] hover:bg-[#F4F6F7] hover:text-[#1A1A2E]'
-            }`}
-          >
-            <div className="flex items-center gap-2.5">
-              <Award className={`w-4 h-4 shrink-0 ${activeTab === 'supervisores' ? 'text-amber-400' : 'text-blue-600'}`} />
-              {!collapsed && <span>Desempeño Supervisores</span>}
-            </div>
-            {!collapsed && (
-              <span
-                className={`text-[10px] font-black px-1.5 py-0.2 rounded-full shrink-0 ${
-                  activeTab === 'supervisores'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-blue-100 text-blue-900 border border-blue-200'
-                }`}
-              >
-                2026
               </span>
             )}
           </button>
